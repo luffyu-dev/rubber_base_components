@@ -14,18 +14,62 @@
 
     <dependencies>
 
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <version>${springboot.version}</version>
+            <optional>true</optional>
+        </dependency>
+
+
+
         <!--数据库连接-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql-connector.version}</version>
         </dependency>
 
 
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
-            <version>${druid.version}</version>
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/com.baomidou/mybatis-plus-boot-starter -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+        </dependency>
+
+
+
+        <!--数据库连接-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <artifactId>base_common_tools</artifactId>
+            <groupId>com.rubber</groupId>
+            <version>${rubber.version}</version>
+        </dependency>
+
+
+
+        <!--添加数据库分库分表插件-->
+        <dependency>
+            <groupId>io.shardingsphere</groupId>
+            <artifactId>sharding-jdbc-core</artifactId>
+            <version>${shardingsphere.sharding.jdbc}</version>
         </dependency>
 
 

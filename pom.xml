@@ -8,28 +8,78 @@
     <artifactId>rubber_base_components</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+
     <modules>
         <module>base_mysql</module>
+        <module>base_common_tools</module>
     </modules>
 
 
     <properties>
+        <rubber.version>1.0-SNAPSHOT</rubber.version>
         <java.version>1.8</java.version>
         <log4j.version>1.1</log4j.version>
         <lombok.version>1.18.16</lombok.version>
-        <mysql-connector.version>5.1.49</mysql-connector.version>
+        <mysql-connector.version>8.0.21</mysql-connector.version>
         <druid.version>1.2.1</druid.version>
         <springboot.version>2.3.4.RELEASE</springboot.version>
+        <mybatis-plus.version>3.4.0</mybatis-plus.version>
+
+        <shardingsphere.sharding.jdbc>3.1.0</shardingsphere.sharding.jdbc>
+
     </properties>
 
 
     <dependencyManagement>
         <dependencies>
+            <!--springboot的版本-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-parent</artifactId>
                 <version>${springboot.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter</artifactId>
+                <version>${springboot.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>${springboot.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+                <version>${springboot.version}</version>
+            </dependency>
+
+
+            <!-- 数据库的操作对象-->
+            <!-- https://mvnrepository.com/artifact/com.baomidou/mybatis-plus-boot-starter -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+
+            <!--数据库连接-->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql-connector.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+
 
             <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
             <dependency>
@@ -42,15 +92,78 @@
     </dependencyManagement>
 
 
+    <dependencies>
+        <dependency>
+            <groupId>com.rubber</groupId>
+            <artifactId>common_utils</artifactId>
+            <version>${rubber.version}</version>
+        </dependency>
+    </dependencies>
+
+    <profiles>
+        <!--开发环境-->
+        <profile>
+            <id>dev</id>
+            <properties>
+                <projectActive>dev</projectActive>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+
+        <!--预发布环境-->
+        <profile>
+            <id>pre</id>
+            <properties>
+                <projectActive>pre</projectActive>
+            </properties>
+        </profile>
+
+        <!--生产环境-->
+        <profile>
+            <id>master</id>
+            <properties>
+                <projectActive>master</projectActive>
+            </properties>
+        </profile>
+
+    </profiles>
+
 
     <build>
+        <finalName>rubber_base_components</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/**</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <includeSystemScope>true</includeSystemScope>
                 </configuration>
             </plugin>
         </plugins>
