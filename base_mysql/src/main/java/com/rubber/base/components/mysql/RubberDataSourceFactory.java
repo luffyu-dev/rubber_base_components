@@ -4,7 +4,6 @@ import cn.hutool.core.collection.CollUtil;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.rubber.base.components.mysql.bean.RubberDataSourceBean;
 import com.rubber.base.components.mysql.bean.RubberDataSourceProperties;
-import com.rubber.base.components.tools.RubberBeanUtils;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -40,22 +39,16 @@ public class RubberDataSourceFactory {
     private static RubberDataSourceBean createForMasterSlave(RubberDataSourceProperties rubberDataSource){
 
         RubberDataSourceBean result = new RubberDataSourceBean(rubberDataSource.getShardingType());
-
         //主要的节点
-        RubberDataSourceProperties master = rubberDataSource.getMasterNode();
-        DruidDataSource masterDataSource = new DruidDataSource();
-        RubberBeanUtils.copyProperties(rubberDataSource,masterDataSource,true,false);
-        RubberBeanUtils.copyProperties(master,masterDataSource,true,false);
-        result.addDb(master.getDbName(),masterDataSource);
-        result.setMasterName(master.getDbName());
-
+        DruidDataSource masterDataSource = createDataSource(rubberDataSource);
+        result.addDb(rubberDataSource.getDbName(),masterDataSource);
+        result.setMasterName(rubberDataSource.getDbName());
         //从节点
         List<RubberDataSourceProperties> slaves = rubberDataSource.getSlaveNode();
         if (CollUtil.isNotEmpty(slaves)){
             for (RubberDataSourceProperties nodeSlave:slaves){
-                DruidDataSource dataSource = new DruidDataSource();
-                RubberBeanUtils.copyProperties(rubberDataSource,dataSource,true,false);
-                RubberBeanUtils.copyProperties(nodeSlave,dataSource,true,false);
+                DruidDataSource dataSource = createDataSource(rubberDataSource);
+                createDataSourceForFilterNull(nodeSlave,dataSource);
                 result.addDb(nodeSlave.getDbName(),dataSource);
                 result.addSlaveName(nodeSlave.getDbName());
             }
@@ -71,9 +64,8 @@ public class RubberDataSourceFactory {
         }
         Map<String,DruidDataSource> rubberSharding= new HashMap<>(clusterNode.size());
         for (RubberDataSourceProperties dsNode:clusterNode){
-            DruidDataSource dataSource = new DruidDataSource();
-            RubberBeanUtils.copyProperties(rubberDataSource,dataSource,true,false);
-            RubberBeanUtils.copyProperties(dsNode,dataSource,true,false);
+            DruidDataSource dataSource = createDataSource(rubberDataSource);
+            createDataSourceForFilterNull(dsNode,dataSource);
             rubberSharding.put(dsNode.getDbName(),dataSource);
         }
 
@@ -87,7 +79,6 @@ public class RubberDataSourceFactory {
 
     private static RubberDataSourceBean createForSingle(RubberDataSourceProperties rubberDataSource){
         DruidDataSource dataSource = createDataSource(rubberDataSource);
-        //RubberBeanUtils.copyProperties(rubberDataSource,dataSource,true,false);
         RubberDataSourceBean result = new RubberDataSourceBean(rubberDataSource.getShardingType());
         result.addDb(rubberDataSource.getDbName(),dataSource);
         return result;
@@ -122,6 +113,72 @@ public class RubberDataSourceFactory {
             //log.error("druid configuration initialization filter", e);
         }
         datasource.setConnectionProperties(rubberDataSource.getConnectionProperties());
+        return  datasource;
+    }
+
+    private static DruidDataSource createDataSourceForFilterNull(RubberDataSourceProperties rubberDataSource,DruidDataSource datasource){
+        if (datasource == null){
+            datasource = new DruidDataSource();
+        }
+        if (rubberDataSource.getUrl() != null){
+            datasource.setUrl(rubberDataSource.getUrl());
+        }
+        if (rubberDataSource.getUsername() != null){
+            datasource.setUsername(rubberDataSource.getUsername());
+        }
+        if (rubberDataSource.getPassword() != null){
+            datasource.setPassword(rubberDataSource.getPassword());
+        }
+        if (rubberDataSource.getDriverClassName() != null){
+            datasource.setDriverClassName(rubberDataSource.getDriverClassName());
+        }
+        if (rubberDataSource.getInitialSize() != null){
+            datasource.setInitialSize(rubberDataSource.getInitialSize());
+        }
+        if (rubberDataSource.getMinIdle() != null){
+            datasource.setMinIdle(rubberDataSource.getMinIdle());
+        }
+        if (rubberDataSource.getMaxActive() != null){
+            datasource.setMaxActive(rubberDataSource.getMaxActive());
+        }
+        if (rubberDataSource.getMaxWait() != null){
+            datasource.setMaxWait(rubberDataSource.getMaxWait());
+        }
+        if (rubberDataSource.getTimeBetweenEvictionRunsMillis() != null){
+            datasource.setTimeBetweenEvictionRunsMillis(rubberDataSource.getTimeBetweenEvictionRunsMillis());
+        }
+        if (rubberDataSource.getMinEvictableIdleTimeMillis() != null){
+            datasource.setMinEvictableIdleTimeMillis(rubberDataSource.getMinEvictableIdleTimeMillis());
+        }
+        if (rubberDataSource.getValidationQuery() != null){
+            datasource.setValidationQuery(rubberDataSource.getValidationQuery());
+        }
+        if (rubberDataSource.getTestWhileIdle() != null){
+            datasource.setTestWhileIdle(rubberDataSource.getTestWhileIdle());
+        }
+        if (rubberDataSource.getTestOnBorrow() != null){
+            datasource.setTestOnBorrow(rubberDataSource.getTestOnBorrow());
+        }
+        if (rubberDataSource.getTestOnReturn() != null){
+            datasource.setTestOnReturn(rubberDataSource.getTestOnReturn());
+        }
+        if (rubberDataSource.getPoolPreparedStatements() != null){
+            datasource.setPoolPreparedStatements(rubberDataSource.getPoolPreparedStatements());
+        }
+        if (rubberDataSource.getMaxPoolPreparedStatementPerConnectionSize() != null){
+            datasource.setMaxPoolPreparedStatementPerConnectionSize(rubberDataSource.getMaxPoolPreparedStatementPerConnectionSize());
+        }
+
+        if (rubberDataSource.getFilters() != null){
+            try {
+                datasource.setFilters(rubberDataSource.getFilters());
+            } catch (SQLException e) {
+                //log.error("druid configuration initialization filter", e);
+            }
+        }
+        if (rubberDataSource.getConnectionProperties() != null){
+            datasource.setConnectionProperties(rubberDataSource.getConnectionProperties());
+        }
         return  datasource;
     }
 

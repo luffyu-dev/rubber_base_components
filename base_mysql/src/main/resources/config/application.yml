@@ -19,28 +19,22 @@ rubber:
           # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
           filters: stat,wall,log4j
           # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
-          #connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
-          url: jdbc:mysql://127.0.0.1:3306/test_00_db?useUnicode=true&amp;characterEncoding=utf-8
+          connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+          url: jdbc:mysql://127.0.0.1:3306/test_00_db?useUnicode=true;characterEncoding=utf-8
           username: root
           password: root
           driver-class-name: com.mysql.jdbc.Driver
-          dbName: userInfo
-
-          masterNode:
-            url: jdbc:mysql://127.0.0.1:3306/test_00_db?useUnicode=true&amp;characterEncoding=utf-8
-            username: root
-            password: root
-            driver-class-name: com.mysql.jdbc.Driver
-            dbName: userMaster
-          clusterNode:
-            - url: jdbc:mysql://127.0.0.1:3306/test_01_db?useUnicode=true&amp;characterEncoding=utf-8
+          dbName: test_00_db
+          #shardingType: MASTER_SLAVE
+          slaveNode:
+            - url: jdbc:mysql://127.0.0.1:3306/test_01_db?useUnicode=true;characterEncoding=utf-8
               username: root
               password: root
               driver-class-name: com.mysql.jdbc.Driver
-              dbName: userSlave01
-            - url: jdbc:mysql://127.0.0.1:3306/test_01_db?useUnicode=true&amp;characterEncoding=utf-8
+              dbName: test_00_db_slave_1
+            - url: jdbc:mysql://127.0.0.1:3306/test_01_db?useUnicode=true;characterEncoding=utf-8
               username: root
               password: root
               driver-class-name: com.mysql.jdbc.Driver
-              dbName: userSlave02
+              dbName: test_00_db_slave_2
 

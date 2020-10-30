@@ -8,16 +8,44 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author luffyu
  * Created on 2020/10/28
  */
 public class RubberBeanUtils {
+
+
+
+    public static void copyProperties2(Object source, Object target,boolean isFilterSourceNull,boolean isCheckTargetNull) throws BeansException, IllegalAccessException {
+        Field[] targetFields = target.getClass().getDeclaredFields();
+        Field[] sourceFields = source.getClass().getDeclaredFields();
+        List<Field> list = Arrays.asList(sourceFields);
+        Map<String, Field> sourceMap = list.stream().collect(Collectors.toMap(Field::getName, i -> i));
+
+        for (Field field:targetFields){
+            System.out.println(field.getName());
+            Field sourceFile = sourceMap.get(field.getName());
+            if (sourceFile == null){
+                continue;
+            }
+            field.setAccessible(true);
+            sourceFile.setAccessible(true);
+            Object targetValue = field.get(target);
+            Object sourceValue = sourceFile.get(source);
+            System.out.println(targetValue+">>>"+sourceValue);
+
+        }
+    }
+
+
 
 
     /**

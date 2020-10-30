@@ -26,11 +26,6 @@ public class RubberDataSourceProperties {
 
 
     /**
-     * 主节点
-     */
-    private RubberDataSourceProperties masterNode;
-
-    /**
      * 主从模式中的从节点
      */
     private List<RubberDataSourceProperties> slaveNode;

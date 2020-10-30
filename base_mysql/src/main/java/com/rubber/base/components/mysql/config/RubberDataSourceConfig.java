@@ -81,7 +81,7 @@ public class RubberDataSourceConfig {
         //设置table的配置值
         TableRuleConfiguration tableConfiguration = new TableRuleConfiguration();
         tableConfiguration.setLogicTable("user_info");
-        tableConfiguration.setActualDataNodes("user_info_${0..2}");
+        tableConfiguration.setActualDataNodes("test_00_db.user_info_0${0..2}");
 
 
         //定义数据库的分表规则
