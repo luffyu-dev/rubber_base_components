@@ -12,6 +12,14 @@ import java.util.List;
 @Data
 public class RubberDataSourceProperties {
 
+
+    /**
+     * 默认的数据库名称
+     * 如果无法适配的话 就采用默认的dataSource
+     */
+    private String defaultDbName;
+
+
     /**
      * 当前库的名称
      */

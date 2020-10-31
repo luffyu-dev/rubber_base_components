@@ -27,7 +27,13 @@ rubber:
 #          dbName: test_00_db
           driver-class-name: com.mysql.cj.jdbc.Driver
           shardingType: CLUSTER
+          defaultDbName: user_config
           clusterNode:
+            - url: jdbc:mysql://127.0.0.1:3306/user_config?useUnicode=true;characterEncoding=utf-8
+              isDefault: true
+              username: root
+              password: root
+              dbName: user_config
             - url: jdbc:mysql://127.0.0.1:3306/user_db_00?useUnicode=true;characterEncoding=utf-8
               username: root
               password: root

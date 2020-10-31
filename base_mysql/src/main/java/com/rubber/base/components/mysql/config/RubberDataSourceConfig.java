@@ -2,11 +2,13 @@ package com.rubber.base.components.mysql.config;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
-import com.rubber.base.components.mysql.Factory.RubberDataSourceFactory;
-import com.rubber.base.components.mysql.Factory.RubberTableConfigFactory;
+import cn.hutool.core.util.StrUtil;
+import com.rubber.base.components.mysql.ShardingConstantTools;
 import com.rubber.base.components.mysql.bean.DBShardingType;
 import com.rubber.base.components.mysql.bean.RubberDataSourceBean;
 import com.rubber.base.components.mysql.bean.RubberDataSourceProperties;
+import com.rubber.base.components.mysql.factory.RubberDataSourceFactory;
+import com.rubber.base.components.mysql.factory.RubberTableConfigFactory;
 import io.shardingsphere.api.algorithm.masterslave.RandomMasterSlaveLoadBalanceAlgorithm;
 import io.shardingsphere.api.config.rule.MasterSlaveRuleConfiguration;
 import io.shardingsphere.api.config.rule.ShardingRuleConfiguration;
@@ -64,6 +66,7 @@ public class RubberDataSourceConfig {
 
         //db的配置
         for (RubberDataSourceProperties rubberDataSourceConfig:userDBDataSource){
+            setDefaultDBName(rubberDataSourceConfig);
             RubberDataSourceBean rubberDataSourceBean= RubberDataSourceFactory.creat(rubberDataSourceConfig);
             shardingDbMap.putAll(rubberDataSourceBean.getShardingDbMap());
             //如果是主从的化
@@ -88,9 +91,20 @@ public class RubberDataSourceConfig {
     }
 
 
-
-
-
+    /**
+     * 设置默认的数据库名称
+     * @param rubberDataSourceProperties
+     */
+    private void setDefaultDBName(RubberDataSourceProperties rubberDataSourceProperties){
+        String defaultName = rubberDataSourceProperties.getDefaultDbName();
+        if (StrUtil.isEmpty(defaultName)){
+            defaultName = rubberDataSourceProperties.getDbName();
+            if (StrUtil.isEmpty(defaultName)){
+                //异常
+            }
+        }
+        ShardingConstantTools.setDefaultDbName(defaultName);
+    }
 
 
 }

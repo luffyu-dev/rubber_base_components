@@ -46,6 +46,8 @@ public class RubberDataSourceBean {
             shardingDbMap = new HashMap<>(16);
         }
         shardingDbMap.put(name,druidDataSource);
+
+
     }
 
 

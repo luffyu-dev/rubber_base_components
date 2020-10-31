@@ -1,4 +1,4 @@
-package com.rubber.base.components.mysql.Factory;
+package com.rubber.base.components.mysql.factory;
 
 import cn.hutool.core.collection.CollUtil;
 import com.alibaba.druid.pool.DruidDataSource;
