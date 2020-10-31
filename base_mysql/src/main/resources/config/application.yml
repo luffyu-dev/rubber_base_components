@@ -1,5 +1,6 @@
 rubber:
   sharding:
+    dataSource:
       userDB:
         - type: com.alibaba.druid.pool.DruidDataSource
           platform: mysql
@@ -23,18 +24,27 @@ rubber:
           url: jdbc:mysql://127.0.0.1:3306/test_00_db?useUnicode=true;characterEncoding=utf-8
           username: root
           password: root
-          driver-class-name: com.mysql.jdbc.Driver
+          driver-class-name: com.mysql.cj.jdbc.Driver
           dbName: test_00_db
-          #shardingType: MASTER_SLAVE
+          shardingType: CLUSTER
           slaveNode:
             - url: jdbc:mysql://127.0.0.1:3306/test_01_db?useUnicode=true;characterEncoding=utf-8
               username: root
               password: root
-              driver-class-name: com.mysql.jdbc.Driver
               dbName: test_00_db_slave_1
             - url: jdbc:mysql://127.0.0.1:3306/test_01_db?useUnicode=true;characterEncoding=utf-8
               username: root
               password: root
-              driver-class-name: com.mysql.jdbc.Driver
               dbName: test_00_db_slave_2
+          clusterNode:
+            - url: jdbc:mysql://127.0.0.1:3306/test_01_db?useUnicode=true;characterEncoding=utf-8
+              username: root
+              password: root
+              dbName: test_00_db
+            - url: jdbc:mysql://127.0.0.1:3306/test_01_db?useUnicode=true;characterEncoding=utf-8
+              username: root
+              password: root
+              dbName: test_01_db
+
+
 

@@ -36,11 +36,11 @@ import java.util.concurrent.ConcurrentHashMap;
 @Data
 @Slf4j
 @Configuration
-@ConfigurationProperties(prefix = "rubber")
+@ConfigurationProperties(prefix = "rubber.sharding")
 public class RubberDataSourceConfig {
 
 
-    private Map<String, List<RubberDataSourceProperties>> sharding;
+    private Map<String, List<RubberDataSourceProperties>> dataSource;
 
 
     @Primary
@@ -51,11 +51,11 @@ public class RubberDataSourceConfig {
 
 
     public DataSource handlerSharding() throws SQLException {
-        if (MapUtil.isEmpty(sharding)){
+        if (MapUtil.isEmpty(dataSource)){
             return null;
         }
 
-        List<RubberDataSourceProperties> userDBDataSource = sharding.get("userDB");
+        List<RubberDataSourceProperties> userDBDataSource = dataSource.get("userDB");
         if (CollUtil.isEmpty(userDBDataSource)){
             return null;
         }
@@ -71,6 +71,7 @@ public class RubberDataSourceConfig {
             //如果是主从的化
             if (DBShardingType.MASTER_SLAVE.equals(rubberDataSourceBean.getShardingType())){
                 MasterSlaveRuleConfiguration masterSlaveRuleConfiguration = new MasterSlaveRuleConfiguration();
+                masterSlaveRuleConfiguration.setName(rubberDataSourceBean.getMasterName());
                 masterSlaveRuleConfiguration.setMasterDataSourceName(rubberDataSourceBean.getMasterName());
                 masterSlaveRuleConfiguration.setSlaveDataSourceNames(rubberDataSourceBean.getSlaveNames());
                 masterSlaveRuleConfiguration.setLoadBalanceAlgorithm(new RandomMasterSlaveLoadBalanceAlgorithm());
@@ -82,8 +83,6 @@ public class RubberDataSourceConfig {
         TableRuleConfiguration tableConfiguration = new TableRuleConfiguration();
         tableConfiguration.setLogicTable("user_info");
         tableConfiguration.setActualDataNodes("test_00_db.user_info_0${0..2}");
-
-
         //定义数据库的分表规则
         StandardShardingStrategyConfiguration dbStrategyConfiguration = new StandardShardingStrategyConfiguration("uid",new MyDBShardingAlgorithm());
         tableConfiguration.setDatabaseShardingStrategyConfig(dbStrategyConfiguration);
@@ -92,9 +91,20 @@ public class RubberDataSourceConfig {
         StandardShardingStrategyConfiguration tableStrategyConfiguration = new StandardShardingStrategyConfiguration("uid",new MyTableShardingAlgorithm());
         tableConfiguration.setTableShardingStrategyConfig(tableStrategyConfiguration);
 
-        //table的配置
 
-        shardingRuleConfiguration.getTableRuleConfigs().add(tableConfiguration);
+//        //设置table的配置值
+//        TableRuleConfiguration tableConfiguration2 = new TableRuleConfiguration();
+//        tableConfiguration2.setLogicTable("user_info");
+//        tableConfiguration2.setActualDataNodes("test_00_db_slave_1.user_info_0${0..2}");
+//        //定义数据库的分表规则
+//        tableConfiguration2.setDatabaseShardingStrategyConfig(dbStrategyConfiguration);
+//        //定义table的分表规则
+//        tableConfiguration2.setTableShardingStrategyConfig(tableStrategyConfiguration);
+//
+//
+//        //table的配置
+//        shardingRuleConfiguration.getTableRuleConfigs().add(tableConfiguration);
+//        shardingRuleConfiguration.getTableRuleConfigs().add(tableConfiguration2);
 
 
         return ShardingDataSourceFactory.createDataSource(shardingDbMap,shardingRuleConfiguration,new ConcurrentHashMap<>(),new Properties());
