@@ -35,10 +35,10 @@ public class RubberTableConfigFactory {
             tableConfiguration.setLogicTable(tableProperties.getTableName());
             tableConfiguration.setActualDataNodes(tableProperties.getActualDataNodes());
             //定义数据库的分表规则
-            StandardShardingStrategyConfiguration dbStrategyConfiguration = new StandardShardingStrategyConfiguration("uid",new MyDBShardingAlgorithm());
+            StandardShardingStrategyConfiguration dbStrategyConfiguration = new StandardShardingStrategyConfiguration(tableProperties.getShardField(),new MyDBShardingAlgorithm());
             tableConfiguration.setDatabaseShardingStrategyConfig(dbStrategyConfiguration);
             //定义table的分表规则
-            StandardShardingStrategyConfiguration tableStrategyConfiguration = new StandardShardingStrategyConfiguration("uid",new MyTableShardingAlgorithm());
+            StandardShardingStrategyConfiguration tableStrategyConfiguration = new StandardShardingStrategyConfiguration(tableProperties.getShardField(),new MyTableShardingAlgorithm());
             tableConfiguration.setTableShardingStrategyConfig(tableStrategyConfiguration);
             tablesConfig.add(tableConfiguration);
         }

@@ -23,11 +23,11 @@ public enum TableShardingType {
      * 按照月分表
      * 例如 202010
      */
-    BY_month,
+    BY_MONTH,
 
     /**
      * 按照年分表
      * 例如 2020
      */
-    BY_year
+    BY_YEAR
 }

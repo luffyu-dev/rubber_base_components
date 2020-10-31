@@ -26,6 +26,10 @@ public class RubberTableProperties {
      */
     private String actualDataNodes;
 
+    /**
+     * 分表的字段
+     */
+    private String shardField;
 
     /**
      * 当前分表的类型

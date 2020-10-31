@@ -45,6 +45,7 @@ rubber:
           tables:
             - tableName: user_info
               actualDataNodes: user_db_0${0..1}.user_info_0${0..2}
+              shardField: user_id
 
 
 

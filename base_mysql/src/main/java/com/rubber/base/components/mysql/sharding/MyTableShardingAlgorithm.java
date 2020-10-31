@@ -14,7 +14,7 @@ public class MyTableShardingAlgorithm implements PreciseShardingAlgorithm<String
 
     @Override
     public String doSharding(Collection<String> collection, PreciseShardingValue<String> preciseShardingValue) {
-        String value = preciseShardingValue.getValue();
+        String value = String.valueOf(preciseShardingValue.getValue());
         for (String each : collection) {
             Integer integer = modHash(value, collection.size());
             if (each.endsWith(String.valueOf(integer))) {

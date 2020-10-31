@@ -16,9 +16,9 @@ public class MyDBShardingAlgorithm implements PreciseShardingAlgorithm<String> {
 
     @Override
     public String doSharding(Collection<String> collection, PreciseShardingValue<String> preciseShardingValue) {
-        String value = preciseShardingValue.getValue();
-        log.info(">>>>db>>>>>{}",collection);
-        log.info(">>>>requestDB>>>>>{}",value);
+        String value = String.valueOf(preciseShardingValue.getValue());
+        System.out.println(">>>>db>>>>>{}"+ collection);
+        System.out.println(">>>>requestDB>>>>>{}"+ value);
         if(collection != null && collection.size() > 0){
             return collection.iterator().next();
         }
