@@ -37,6 +37,11 @@ public class RubberDataSourceProperties {
 
 
     /**
+     * 需要分表的table信息
+     */
+    private List<RubberTableProperties> tables;
+
+    /**
      * 连接的必要参数
      */
     private String url;

@@ -2,17 +2,15 @@ package com.rubber.base.components.mysql.config;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
-import com.rubber.base.components.mysql.RubberDataSourceFactory;
+import com.rubber.base.components.mysql.Factory.RubberDataSourceFactory;
+import com.rubber.base.components.mysql.Factory.RubberTableConfigFactory;
 import com.rubber.base.components.mysql.bean.DBShardingType;
 import com.rubber.base.components.mysql.bean.RubberDataSourceBean;
 import com.rubber.base.components.mysql.bean.RubberDataSourceProperties;
-import com.rubber.base.components.mysql.sharding.MyDBShardingAlgorithm;
-import com.rubber.base.components.mysql.sharding.MyTableShardingAlgorithm;
 import io.shardingsphere.api.algorithm.masterslave.RandomMasterSlaveLoadBalanceAlgorithm;
 import io.shardingsphere.api.config.rule.MasterSlaveRuleConfiguration;
 import io.shardingsphere.api.config.rule.ShardingRuleConfiguration;
 import io.shardingsphere.api.config.rule.TableRuleConfiguration;
-import io.shardingsphere.api.config.strategy.StandardShardingStrategyConfiguration;
 import io.shardingsphere.shardingjdbc.api.ShardingDataSourceFactory;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -77,38 +75,22 @@ public class RubberDataSourceConfig {
                 masterSlaveRuleConfiguration.setLoadBalanceAlgorithm(new RandomMasterSlaveLoadBalanceAlgorithm());
                 shardingRuleConfiguration.getMasterSlaveRuleConfigs().add(masterSlaveRuleConfiguration);
             }
+
+            List<TableRuleConfiguration> tableConfig = RubberTableConfigFactory.createTableConfig(rubberDataSourceConfig);
+            if (CollUtil.isNotEmpty(tableConfig)){
+                shardingRuleConfiguration.getTableRuleConfigs().addAll(tableConfig);
+            }
+
+            //初始化table信息
         }
-
-        //设置table的配置值
-        TableRuleConfiguration tableConfiguration = new TableRuleConfiguration();
-        tableConfiguration.setLogicTable("user_info");
-        tableConfiguration.setActualDataNodes("test_00_db.user_info_0${0..2}");
-        //定义数据库的分表规则
-        StandardShardingStrategyConfiguration dbStrategyConfiguration = new StandardShardingStrategyConfiguration("uid",new MyDBShardingAlgorithm());
-        tableConfiguration.setDatabaseShardingStrategyConfig(dbStrategyConfiguration);
-
-        //定义table的分表规则
-        StandardShardingStrategyConfiguration tableStrategyConfiguration = new StandardShardingStrategyConfiguration("uid",new MyTableShardingAlgorithm());
-        tableConfiguration.setTableShardingStrategyConfig(tableStrategyConfiguration);
-
-
-//        //设置table的配置值
-//        TableRuleConfiguration tableConfiguration2 = new TableRuleConfiguration();
-//        tableConfiguration2.setLogicTable("user_info");
-//        tableConfiguration2.setActualDataNodes("test_00_db_slave_1.user_info_0${0..2}");
-//        //定义数据库的分表规则
-//        tableConfiguration2.setDatabaseShardingStrategyConfig(dbStrategyConfiguration);
-//        //定义table的分表规则
-//        tableConfiguration2.setTableShardingStrategyConfig(tableStrategyConfiguration);
-//
-//
-//        //table的配置
-//        shardingRuleConfiguration.getTableRuleConfigs().add(tableConfiguration);
-//        shardingRuleConfiguration.getTableRuleConfigs().add(tableConfiguration2);
-
-
         return ShardingDataSourceFactory.createDataSource(shardingDbMap,shardingRuleConfiguration,new ConcurrentHashMap<>(),new Properties());
 
     }
+
+
+
+
+
+
 
 }

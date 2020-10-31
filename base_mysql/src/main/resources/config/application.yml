@@ -21,30 +21,24 @@ rubber:
           filters: stat,wall,log4j
           # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
           connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
-          url: jdbc:mysql://127.0.0.1:3306/test_00_db?useUnicode=true;characterEncoding=utf-8
-          username: root
-          password: root
+#          url: jdbc:mysql://127.0.0.1:3306/test_00_db?useUnicode=true;characterEncoding=utf-8
+#          username: root
+#          password: root
+#          dbName: test_00_db
           driver-class-name: com.mysql.cj.jdbc.Driver
-          dbName: test_00_db
           shardingType: CLUSTER
-          slaveNode:
-            - url: jdbc:mysql://127.0.0.1:3306/test_01_db?useUnicode=true;characterEncoding=utf-8
-              username: root
-              password: root
-              dbName: test_00_db_slave_1
-            - url: jdbc:mysql://127.0.0.1:3306/test_01_db?useUnicode=true;characterEncoding=utf-8
-              username: root
-              password: root
-              dbName: test_00_db_slave_2
           clusterNode:
-            - url: jdbc:mysql://127.0.0.1:3306/test_01_db?useUnicode=true;characterEncoding=utf-8
+            - url: jdbc:mysql://127.0.0.1:3306/user_db_00?useUnicode=true;characterEncoding=utf-8
               username: root
               password: root
-              dbName: test_00_db
-            - url: jdbc:mysql://127.0.0.1:3306/test_01_db?useUnicode=true;characterEncoding=utf-8
+              dbName: user_db_00
+            - url: jdbc:mysql://127.0.0.1:3306/user_db_01?useUnicode=true;characterEncoding=utf-8
               username: root
               password: root
-              dbName: test_01_db
+              dbName: user_db_01
+          tables:
+            - tableName: user_info
+              actualDataNodes: user_db_0${0..1}.user_info_0${0..2}
 
 
 
