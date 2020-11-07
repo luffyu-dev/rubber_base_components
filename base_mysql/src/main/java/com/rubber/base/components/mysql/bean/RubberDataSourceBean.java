@@ -17,26 +17,38 @@ public class RubberDataSourceBean {
 
     /**
      * 数据库的分库规则
-     * @see DBShardingType
+     * @see DBClusterType
      */
-    private DBShardingType shardingType;
+    private DBClusterType shardingType;
 
-
-
+    /**
+     * 当前全部的数据源信息
+     */
     private Map<String,DruidDataSource>  shardingDbMap;
 
 
-
+    /**
+     * 主数据源的名称
+     */
     private String masterName;
 
 
+    /**
+     * 从数据源的名称
+     */
     private Set<String> slaveNames;
+
+    /**
+     * 默认的数据源配置
+     * 不进行分库分表的时候，读取的数据源
+     */
+    private String defaultName;
 
 
     public RubberDataSourceBean() {
     }
 
-    public RubberDataSourceBean(DBShardingType shardingType) {
+    public RubberDataSourceBean(DBClusterType shardingType) {
         this.shardingType = shardingType;
     }
 

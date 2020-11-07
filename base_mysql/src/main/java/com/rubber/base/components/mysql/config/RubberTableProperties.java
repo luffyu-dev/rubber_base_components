@@ -1,5 +1,6 @@
-package com.rubber.base.components.mysql.bean;
+package com.rubber.base.components.mysql.config;
 
+import com.rubber.base.components.mysql.bean.TableShardingType;
 import lombok.Data;
 
 /**

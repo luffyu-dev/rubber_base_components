@@ -1,9 +1,11 @@
 package com.rubber.base.components.mysql.factory;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.rubber.base.components.mysql.bean.RubberDataSourceBean;
-import com.rubber.base.components.mysql.bean.RubberDataSourceProperties;
+import com.rubber.base.components.mysql.config.RubberDataSourceProperties;
+import com.rubber.base.components.mysql.exception.DefaultDBNotConnectionException;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -53,34 +55,59 @@ public class RubberDataSourceFactory {
                 result.addSlaveName(nodeSlave.getDbName());
             }
         }
+        String defaultName = StrUtil.isNotEmpty(rubberDataSource.getDefaultDbName()) ? rubberDataSource.getDefaultDbName() : result.getMasterName();
+        if (!defaultName.equals(result.getMasterName())){
+            throw new DefaultDBNotConnectionException(defaultName);
+        }
         return result;
     }
 
 
+    /**
+     * 集群db的情况
+     */
     private static RubberDataSourceBean createForCluster(RubberDataSourceProperties rubberDataSource){
         List<RubberDataSourceProperties> clusterNode = rubberDataSource.getClusterNode();
         if (CollUtil.isEmpty(clusterNode)){
             return null;
         }
+        String defaultName = rubberDataSource.getDefaultDbName();
         Map<String,DruidDataSource> rubberSharding= new HashMap<>(clusterNode.size());
         for (RubberDataSourceProperties dsNode:clusterNode){
             DruidDataSource dataSource = createDataSource(rubberDataSource);
             createDataSourceForFilterNull(dsNode,dataSource);
             rubberSharding.put(dsNode.getDbName(),dataSource);
+            if (StrUtil.isEmpty(defaultName)){
+                defaultName = dsNode.getDbName();
+            }
+        }
+        if (rubberSharding.get(defaultName) == null){
+            throw new DefaultDBNotConnectionException(defaultName);
         }
 
         RubberDataSourceBean result = new RubberDataSourceBean(rubberDataSource.getShardingType());
         result.setShardingDbMap(rubberSharding);
+        result.setDefaultName(defaultName);
         return result;
     }
 
 
-
-
+    /**
+     * 单db的情况
+     */
     private static RubberDataSourceBean createForSingle(RubberDataSourceProperties rubberDataSource){
         DruidDataSource dataSource = createDataSource(rubberDataSource);
         RubberDataSourceBean result = new RubberDataSourceBean(rubberDataSource.getShardingType());
         result.addDb(rubberDataSource.getDbName(),dataSource);
+        String defaultName = rubberDataSource.getDbName();
+        if (StrUtil.isNotEmpty(defaultName)){
+            if (!defaultName.equals(rubberDataSource.getDbName())){
+                throw new DefaultDBNotConnectionException(defaultName);
+            }
+        }else {
+            defaultName = rubberDataSource.getDbName();
+        }
+        result.setDefaultName(defaultName);
         return result;
     }
 

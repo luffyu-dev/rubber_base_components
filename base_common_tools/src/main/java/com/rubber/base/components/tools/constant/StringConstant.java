@@ -8,4 +8,7 @@ public class StringConstant {
 
 
     public static final String LINK_UNDER_LINE = "_";
+
+
+    public static final String LINK_ARRAY = ",";
 }

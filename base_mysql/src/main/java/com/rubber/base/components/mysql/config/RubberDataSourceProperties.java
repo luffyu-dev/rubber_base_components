@@ -1,5 +1,6 @@
-package com.rubber.base.components.mysql.bean;
+package com.rubber.base.components.mysql.config;
 
+import com.rubber.base.components.mysql.bean.DBClusterType;
 import lombok.Data;
 
 import java.util.List;
@@ -28,9 +29,9 @@ public class RubberDataSourceProperties {
 
     /**
      * 数据库的分库规则
-     * @see DBShardingType
+     * @see DBClusterType
      */
-    private DBShardingType shardingType = DBShardingType.SINGLE;
+    private DBClusterType shardingType = DBClusterType.SINGLE;
 
 
     /**

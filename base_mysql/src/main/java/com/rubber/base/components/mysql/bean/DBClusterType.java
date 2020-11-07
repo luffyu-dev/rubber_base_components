@@ -4,7 +4,7 @@ package com.rubber.base.components.mysql.bean;
  * @author luffyu
  * Created on 2020/10/28
  */
-public enum DBShardingType {
+public enum DBClusterType {
 
 
     /**

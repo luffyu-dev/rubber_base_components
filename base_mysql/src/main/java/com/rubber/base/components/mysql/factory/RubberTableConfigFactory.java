@@ -1,8 +1,8 @@
 package com.rubber.base.components.mysql.factory;
 
 import cn.hutool.core.collection.CollUtil;
-import com.rubber.base.components.mysql.bean.RubberDataSourceProperties;
-import com.rubber.base.components.mysql.bean.RubberTableProperties;
+import com.rubber.base.components.mysql.config.RubberDataSourceProperties;
+import com.rubber.base.components.mysql.config.RubberTableProperties;
 import com.rubber.base.components.mysql.sharding.MyDBShardingAlgorithm;
 import com.rubber.base.components.mysql.sharding.MyTableShardingAlgorithm;
 import io.shardingsphere.api.config.rule.TableRuleConfiguration;
