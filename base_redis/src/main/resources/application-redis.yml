@@ -1,0 +1,10 @@
+rubber:
+  redis:
+    cluster:
+      normalRedis:
+        nodes:
+          - 127.0.0.1:6379
+        connectionTimeout: 6000
+        soTimeout: 6000
+        maxAttempts: 5
+        password: root

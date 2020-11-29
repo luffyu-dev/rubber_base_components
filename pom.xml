@@ -12,6 +12,8 @@
     <modules>
         <module>base_mysql</module>
         <module>base_common_tools</module>
+        <module>base_redis</module>
+        <module>base_all</module>
     </modules>
 
 
@@ -22,16 +24,29 @@
         <lombok.version>1.18.16</lombok.version>
         <mysql-connector.version>8.0.21</mysql-connector.version>
         <druid.version>1.2.1</druid.version>
-        <springboot.version>2.3.4.RELEASE</springboot.version>
+        <springboot.version>2.2.11.RELEASE</springboot.version>
+        <springcloudalibaba.version>2.2.3.RELEASE</springcloudalibaba.version>
         <mybatis-plus.version>3.4.0</mybatis-plus.version>
 
         <shardingsphere.sharding.jdbc>3.1.0</shardingsphere.sharding.jdbc>
+
+        <jedis.version>3.3.0</jedis.version>
 
     </properties>
 
 
     <dependencyManagement>
         <dependencies>
+
+            <!--spring-cloud-alibaba的版本-->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${springcloudalibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
             <!--springboot的版本-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
