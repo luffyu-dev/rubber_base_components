@@ -137,6 +137,14 @@
         <profile>
             <id>pre</id>
             <properties>
+                <projectActive>test</projectActive>
+            </properties>
+        </profile>
+
+        <!--预发布环境-->
+        <profile>
+            <id>pre</id>
+            <properties>
                 <projectActive>pre</projectActive>
             </properties>
         </profile>
