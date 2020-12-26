@@ -26,11 +26,18 @@
         </dependency>
 
 
-        <dependency>
-            <artifactId>base_redis</artifactId>
-            <groupId>com.rubber</groupId>
-            <version>${rubber.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <artifactId>base_config</artifactId>-->
+<!--            <groupId>com.rubber</groupId>-->
+<!--            <version>${rubber.version}</version>-->
+<!--        </dependency>-->
+
+
+<!--        <dependency>-->
+<!--            <artifactId>base_redis</artifactId>-->
+<!--            <groupId>com.rubber</groupId>-->
+<!--            <version>${rubber.version}</version>-->
+<!--        </dependency>-->
     </dependencies>
 
 

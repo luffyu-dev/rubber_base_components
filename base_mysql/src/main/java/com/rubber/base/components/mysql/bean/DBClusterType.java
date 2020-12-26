@@ -8,17 +8,18 @@ public enum DBClusterType {
 
 
     /**
-     * 单例
+     * 单库
      */
     SINGLE,
 
     /**
-     * 主从
+     * 多库
      */
-    MASTER_SLAVE,
+    CLUSTER,
 
     /**
-     * 集群
+     * 主从库
      */
-    CLUSTER
+    MASTER_SLAVE
+
 }

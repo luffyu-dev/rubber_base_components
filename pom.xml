@@ -11,9 +11,9 @@
 
     <modules>
         <module>base_mysql</module>
-        <module>base_common_tools</module>
         <module>base_redis</module>
         <module>base_all</module>
+        <module>base_config</module>
     </modules>
 
 
@@ -109,16 +109,38 @@
                 <version>${lombok.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.rubber</groupId>
+                <artifactId>common_utils</artifactId>
+                <version>${rubber.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
 
     <dependencies>
+
+        <!--spring-cloud-alibaba的版本-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+            <version>${springcloudalibaba.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.rubber</groupId>
             <artifactId>common_utils</artifactId>
-            <version>${rubber.version}</version>
         </dependency>
+
     </dependencies>
 
     <profiles>
@@ -135,7 +157,7 @@
 
         <!--预发布环境-->
         <profile>
-            <id>pre</id>
+            <id>test</id>
             <properties>
                 <projectActive>test</projectActive>
             </properties>

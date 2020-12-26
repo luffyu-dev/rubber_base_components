@@ -62,13 +62,6 @@
         </dependency>
 
 
-        <dependency>
-            <artifactId>base_common_tools</artifactId>
-            <groupId>com.rubber</groupId>
-            <version>${rubber.version}</version>
-        </dependency>
-
-
 
         <!--添加数据库分库分表插件-->
         <dependency>

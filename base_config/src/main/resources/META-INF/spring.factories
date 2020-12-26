@@ -1,0 +1,2 @@
+org.springframework.cloud.bootstrap.BootstrapConfiguration=\
+com.rubber.base.components.config.RubberConfiguration

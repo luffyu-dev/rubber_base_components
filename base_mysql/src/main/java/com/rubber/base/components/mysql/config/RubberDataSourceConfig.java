@@ -11,7 +11,6 @@ import com.rubber.base.components.mysql.factory.RubberDataSourceFactory;
 import com.rubber.base.components.mysql.factory.RubberTableConfigFactory;
 import com.rubber.base.components.mysql.sharding.DefaultDBShardingAlgorithm;
 import com.rubber.base.components.mysql.sharding.MyDBShardingAlgorithm;
-import com.rubber.base.components.tools.constant.StringConstant;
 import io.shardingsphere.api.algorithm.masterslave.RandomMasterSlaveLoadBalanceAlgorithm;
 import io.shardingsphere.api.config.rule.MasterSlaveRuleConfiguration;
 import io.shardingsphere.api.config.rule.ShardingRuleConfiguration;
@@ -124,7 +123,7 @@ public class RubberDataSourceConfig {
         }
 
         List<RubberDataSourceProperties> list = new ArrayList<>();
-        String[] dbSetNameArray = dbSetNames.split(StringConstant.LINK_ARRAY);
+        String[] dbSetNameArray = dbSetNames.split(",");
         for(String dbName:dbSetNameArray){
             List<RubberDataSourceProperties> dbDataSource = dataSource.get(dbName);
             if (CollUtil.isEmpty(dbDataSource)){

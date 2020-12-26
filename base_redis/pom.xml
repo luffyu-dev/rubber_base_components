@@ -22,13 +22,5 @@
         </dependency>
 
 
-
-        <dependency>
-            <artifactId>base_common_tools</artifactId>
-            <groupId>com.rubber</groupId>
-            <version>${rubber.version}</version>
-        </dependency>
-
-
     </dependencies>
 </project>
