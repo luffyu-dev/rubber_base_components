@@ -1,10 +1,13 @@
 package com.rubber.base.components.mysql.properties;
 
+import lombok.Data;
+
 /**
  * @author luffyu
  * Created on 2020/12/26
  */
-public class DbConfigProperties extends DbConnectProperties{
+@Data
+public class DbConfigProperties{
 
     /**
      * #初始化的大小

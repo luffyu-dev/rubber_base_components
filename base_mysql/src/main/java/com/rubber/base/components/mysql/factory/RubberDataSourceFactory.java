@@ -1,215 +1,28 @@
 package com.rubber.base.components.mysql.factory;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.StrUtil;
-import com.alibaba.druid.pool.DruidDataSource;
-import com.rubber.base.components.mysql.bean.RubberDataSourceBean;
-import com.rubber.base.components.mysql.config.RubberDataSourceProperties;
-import com.rubber.base.components.mysql.exception.DefaultDBNotConnectionException;
-
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.rubber.base.components.mysql.bean.RubberDruidDataSource;
+import com.rubber.base.components.mysql.bean.RubberShardingRuleBean;
+import com.rubber.base.components.mysql.properties.RubberDbProperties;
 
 /**
  * @author luffyu
- * Created on 2020/10/28
+ * Created on 2020/12/26
  */
-public class RubberDataSourceFactory {
-
+public interface RubberDataSourceFactory {
 
     /**
-     * 创建对象信息
-     * @param rubberDataSource
+     * 创建db配置尊重
+     * @param rubberDbProperties
      * @return
      */
-    public static RubberDataSourceBean creat(RubberDataSourceProperties rubberDataSource){
-        switch (rubberDataSource.getShardingType()){
-            case MASTER_SLAVE:
-                return createForMasterSlave(rubberDataSource);
-            case CLUSTER:
-                return createForCluster(rubberDataSource);
-            case SINGLE:
-            default:
-                return createForSingle(rubberDataSource);
-        }
-    }
-
-
-
-    private static RubberDataSourceBean createForMasterSlave(RubberDataSourceProperties rubberDataSource){
-
-        RubberDataSourceBean result = new RubberDataSourceBean(rubberDataSource.getShardingType());
-        //主要的节点
-        DruidDataSource masterDataSource = createDataSource(rubberDataSource);
-        result.addDb(rubberDataSource.getDbName(),masterDataSource);
-        result.setMasterName(rubberDataSource.getDbName());
-        //从节点
-        List<RubberDataSourceProperties> slaves = rubberDataSource.getSlaveNode();
-        if (CollUtil.isNotEmpty(slaves)){
-            for (RubberDataSourceProperties nodeSlave:slaves){
-                DruidDataSource dataSource = createDataSource(rubberDataSource);
-                createDataSourceForFilterNull(nodeSlave,dataSource);
-                result.addDb(nodeSlave.getDbName(),dataSource);
-                result.addSlaveName(nodeSlave.getDbName());
-            }
-        }
-        String defaultName = StrUtil.isNotEmpty(rubberDataSource.getDefaultDbName()) ? rubberDataSource.getDefaultDbName() : result.getMasterName();
-        if (!defaultName.equals(result.getMasterName())){
-            throw new DefaultDBNotConnectionException(defaultName);
-        }
-        return result;
-    }
+    RubberDruidDataSource createDbSource(RubberDbProperties rubberDbProperties);
 
 
     /**
-     * 集群db的情况
+     * 创建路由分片规则
+     * @param rubberDbProperties
+     * @return
      */
-    private static RubberDataSourceBean createForCluster(RubberDataSourceProperties rubberDataSource){
-        List<RubberDataSourceProperties> clusterNode = rubberDataSource.getClusterNode();
-        if (CollUtil.isEmpty(clusterNode)){
-            return null;
-        }
-        String defaultName = rubberDataSource.getDefaultDbName();
-        Map<String,DruidDataSource> rubberSharding= new HashMap<>(clusterNode.size());
-        for (RubberDataSourceProperties dsNode:clusterNode){
-            DruidDataSource dataSource = createDataSource(rubberDataSource);
-            createDataSourceForFilterNull(dsNode,dataSource);
-            rubberSharding.put(dsNode.getDbName(),dataSource);
-            if (StrUtil.isEmpty(defaultName)){
-                defaultName = dsNode.getDbName();
-            }
-        }
-        if (rubberSharding.get(defaultName) == null){
-            throw new DefaultDBNotConnectionException(defaultName);
-        }
-
-        RubberDataSourceBean result = new RubberDataSourceBean(rubberDataSource.getShardingType());
-        result.setShardingDbMap(rubberSharding);
-        result.setDefaultName(defaultName);
-        return result;
-    }
-
-
-    /**
-     * 单db的情况
-     */
-    private static RubberDataSourceBean createForSingle(RubberDataSourceProperties rubberDataSource){
-        DruidDataSource dataSource = createDataSource(rubberDataSource);
-        RubberDataSourceBean result = new RubberDataSourceBean(rubberDataSource.getShardingType());
-        result.addDb(rubberDataSource.getDbName(),dataSource);
-        String defaultName = rubberDataSource.getDbName();
-        if (StrUtil.isNotEmpty(defaultName)){
-            if (!defaultName.equals(rubberDataSource.getDbName())){
-                throw new DefaultDBNotConnectionException(defaultName);
-            }
-        }else {
-            defaultName = rubberDataSource.getDbName();
-        }
-        result.setDefaultName(defaultName);
-        return result;
-    }
-
-
-    /**
-     * 创建数据库
-     */
-    private static DruidDataSource createDataSource(RubberDataSourceProperties rubberDataSource){
-        DruidDataSource datasource = new DruidDataSource();
-        datasource.setUrl(rubberDataSource.getUrl());
-        datasource.setUsername(rubberDataSource.getUsername());
-        datasource.setPassword(rubberDataSource.getPassword());
-        datasource.setDriverClassName(rubberDataSource.getDriverClassName());
-        //configuration
-        datasource.setInitialSize(rubberDataSource.getInitialSize());
-        datasource.setMinIdle(rubberDataSource.getMinIdle());
-        datasource.setMaxActive(rubberDataSource.getMaxActive());
-        datasource.setMaxWait(rubberDataSource.getMaxWait());
-        datasource.setTimeBetweenEvictionRunsMillis(rubberDataSource.getTimeBetweenEvictionRunsMillis());
-        datasource.setMinEvictableIdleTimeMillis(rubberDataSource.getMinEvictableIdleTimeMillis());
-        datasource.setValidationQuery(rubberDataSource.getValidationQuery());
-        datasource.setTestWhileIdle(rubberDataSource.getTestWhileIdle());
-        datasource.setTestOnBorrow(rubberDataSource.getTestOnBorrow());
-        datasource.setTestOnReturn(rubberDataSource.getTestOnReturn());
-        datasource.setPoolPreparedStatements(rubberDataSource.getPoolPreparedStatements());
-        datasource.setMaxPoolPreparedStatementPerConnectionSize(rubberDataSource.getMaxPoolPreparedStatementPerConnectionSize());
-        try {
-            datasource.setFilters(rubberDataSource.getFilters());
-        } catch (SQLException e) {
-            //log.error("druid configuration initialization filter", e);
-        }
-        datasource.setConnectionProperties(rubberDataSource.getConnectionProperties());
-        return  datasource;
-    }
-
-    private static DruidDataSource createDataSourceForFilterNull(RubberDataSourceProperties rubberDataSource,DruidDataSource datasource){
-        if (datasource == null){
-            datasource = new DruidDataSource();
-        }
-        if (rubberDataSource.getUrl() != null){
-            datasource.setUrl(rubberDataSource.getUrl());
-        }
-        if (rubberDataSource.getUsername() != null){
-            datasource.setUsername(rubberDataSource.getUsername());
-        }
-        if (rubberDataSource.getPassword() != null){
-            datasource.setPassword(rubberDataSource.getPassword());
-        }
-        if (rubberDataSource.getDriverClassName() != null){
-            datasource.setDriverClassName(rubberDataSource.getDriverClassName());
-        }
-        if (rubberDataSource.getInitialSize() != null){
-            datasource.setInitialSize(rubberDataSource.getInitialSize());
-        }
-        if (rubberDataSource.getMinIdle() != null){
-            datasource.setMinIdle(rubberDataSource.getMinIdle());
-        }
-        if (rubberDataSource.getMaxActive() != null){
-            datasource.setMaxActive(rubberDataSource.getMaxActive());
-        }
-        if (rubberDataSource.getMaxWait() != null){
-            datasource.setMaxWait(rubberDataSource.getMaxWait());
-        }
-        if (rubberDataSource.getTimeBetweenEvictionRunsMillis() != null){
-            datasource.setTimeBetweenEvictionRunsMillis(rubberDataSource.getTimeBetweenEvictionRunsMillis());
-        }
-        if (rubberDataSource.getMinEvictableIdleTimeMillis() != null){
-            datasource.setMinEvictableIdleTimeMillis(rubberDataSource.getMinEvictableIdleTimeMillis());
-        }
-        if (rubberDataSource.getValidationQuery() != null){
-            datasource.setValidationQuery(rubberDataSource.getValidationQuery());
-        }
-        if (rubberDataSource.getTestWhileIdle() != null){
-            datasource.setTestWhileIdle(rubberDataSource.getTestWhileIdle());
-        }
-        if (rubberDataSource.getTestOnBorrow() != null){
-            datasource.setTestOnBorrow(rubberDataSource.getTestOnBorrow());
-        }
-        if (rubberDataSource.getTestOnReturn() != null){
-            datasource.setTestOnReturn(rubberDataSource.getTestOnReturn());
-        }
-        if (rubberDataSource.getPoolPreparedStatements() != null){
-            datasource.setPoolPreparedStatements(rubberDataSource.getPoolPreparedStatements());
-        }
-        if (rubberDataSource.getMaxPoolPreparedStatementPerConnectionSize() != null){
-            datasource.setMaxPoolPreparedStatementPerConnectionSize(rubberDataSource.getMaxPoolPreparedStatementPerConnectionSize());
-        }
-
-        if (rubberDataSource.getFilters() != null){
-            try {
-                datasource.setFilters(rubberDataSource.getFilters());
-            } catch (SQLException e) {
-                //log.error("druid configuration initialization filter", e);
-            }
-        }
-        if (rubberDataSource.getConnectionProperties() != null){
-            datasource.setConnectionProperties(rubberDataSource.getConnectionProperties());
-        }
-        return  datasource;
-    }
-
-
-
+    RubberShardingRuleBean createDbRule(RubberDbProperties rubberDbProperties);
 
 }

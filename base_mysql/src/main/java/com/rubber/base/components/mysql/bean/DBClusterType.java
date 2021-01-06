@@ -17,9 +17,5 @@ public enum DBClusterType {
      */
     CLUSTER,
 
-    /**
-     * 主从库
-     */
-    MASTER_SLAVE
 
 }
