@@ -35,7 +35,7 @@ public class RubberEnvironmentPostProcessor implements PropertySourceLocator {
     @Override
     public PropertySource<?> locate(Environment environment) {
         try {
-            String nacosServerAdd = environment.getProperty("spring.cloud.nacos.server-addr");
+            String nacosServerAdd = "127.0.0.1:8848";
             if (StrUtil.isEmpty(nacosServerAdd)){
                 throw new RubberConfigException("spring.cloud.nacos.server-addr is null");
             }
@@ -81,7 +81,7 @@ public class RubberEnvironmentPostProcessor implements PropertySourceLocator {
         String group = "DEFAULT_GROUP";
         String dbSet = environment.getProperty("rubber.components.config.dbSet");
         Map<String,String> dataIds = new HashMap<>(10);
-        String dbDataId = dataIdPrefix + "mysql-" + projectActive + "-"+dbSet+".yml";
+        String dbDataId = dataIdPrefix + "mysql-" + projectActive + "-userDb.yml";
         dataIds.putIfAbsent(dbDataId,group);
 
         return dataIds;

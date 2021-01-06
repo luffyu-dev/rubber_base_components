@@ -26,11 +26,11 @@
         </dependency>
 
 
-<!--        <dependency>-->
-<!--            <artifactId>base_config</artifactId>-->
-<!--            <groupId>com.rubber</groupId>-->
-<!--            <version>${rubber.version}</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <artifactId>base_config</artifactId>
+            <groupId>com.rubber</groupId>
+            <version>${rubber.version}</version>
+        </dependency>
 
 
 <!--        <dependency>-->
