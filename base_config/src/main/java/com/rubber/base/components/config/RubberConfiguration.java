@@ -1,7 +1,11 @@
 package com.rubber.base.components.config;
 
 import com.alibaba.cloud.nacos.NacosConfigManager;
+import com.rubber.base.components.config.Locator.MySqlRubberConfigLocator;
+import com.rubber.base.components.config.Locator.RedisRubberConfigLocator;
+import com.rubber.base.components.config.properties.RubberProxyConfigProperties;
 import lombok.Data;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 
 /**
@@ -11,8 +15,24 @@ import org.springframework.context.annotation.Bean;
 @Data
 public class RubberConfiguration {
 
+
+
     @Bean
-    public RubberPropertySourceLocator myPropertySourceLocator(NacosConfigManager nacosConfigManager){
-        return new RubberPropertySourceLocator(nacosConfigManager);
+    @ConditionalOnMissingBean
+    public RubberProxyConfigProperties rubberProxyConfigProperties(){
+        return new RubberProxyConfigProperties();
+    }
+
+
+
+    @Bean
+    public MySqlRubberConfigLocator mysqlPropertySourceLocator( NacosConfigManager nacosConfigManager,RubberProxyConfigProperties rubberProxyConfigProperties){
+        return new MySqlRubberConfigLocator(nacosConfigManager,rubberProxyConfigProperties);
+    }
+
+
+    @Bean
+    public RedisRubberConfigLocator redisPropertySourceLocator(NacosConfigManager nacosConfigManager,RubberProxyConfigProperties rubberProxyConfigProperties){
+        return new RedisRubberConfigLocator(nacosConfigManager,rubberProxyConfigProperties);
     }
 }

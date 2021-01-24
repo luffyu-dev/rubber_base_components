@@ -1,6 +1,8 @@
-package com.rubber.base.components.config;
+package com.rubber.base.components.config.properties;
 
 import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
 /**
  *
@@ -10,7 +12,9 @@ import lombok.Data;
  * Created on 2020/12/13
  */
 @Data
-public class ComponentsConfigProperties {
+@Configuration
+@ConfigurationProperties("rubber.proxy.config")
+public class RubberProxyConfigProperties {
 
     /**
      * db配置的集合名称
