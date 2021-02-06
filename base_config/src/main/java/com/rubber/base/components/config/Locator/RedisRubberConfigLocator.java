@@ -32,7 +32,7 @@ public class RedisRubberConfigLocator extends BaseRubberConfigLocator {
 
         Set<String> redisDataId = new HashSet<>();
         for (String activeProfile:activeProfiles){
-            StringBuilder dataId = new StringBuilder("rubber-config-redis-" + activeProfile + "-");
+            StringBuilder dataId = new StringBuilder(activeProfile+"-rubber-config-redis-");
             for (String redisSetName:redisSetNameArray){
                 dataId.append(redisSetName).append(".yml");
             }

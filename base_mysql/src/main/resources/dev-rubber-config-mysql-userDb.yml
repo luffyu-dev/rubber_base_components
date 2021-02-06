@@ -1,3 +1,6 @@
+server:
+  port: 8083
+
 rubber:
   proxy:
     dbSetName: USER_DB_CLUSTER
@@ -78,5 +81,3 @@ rubber:
             password: root
             driverClassName: com.mysql.cj.jdbc.Driver
             dbName: userDb01
-
-

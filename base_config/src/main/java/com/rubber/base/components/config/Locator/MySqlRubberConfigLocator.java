@@ -31,7 +31,7 @@ public class MySqlRubberConfigLocator extends BaseRubberConfigLocator {
         String[] dbSetNameArray = dbSetNames.split(",");
         Set<String> mysqlDataId = new HashSet<>();
         for (String activeProfile:activeProfiles){
-            StringBuilder dataId = new StringBuilder("rubber-config-mysql-" + activeProfile + "-");
+            StringBuilder dataId = new StringBuilder(activeProfile+"-rubber-config-mysql-");
             for (String dbSetName:dbSetNameArray){
                 dataId.append(dbSetName).append(".yml");
             }
