@@ -32,6 +32,8 @@
 
         <jedis.version>3.3.0</jedis.version>
 
+        <sleuth-zipkin.version>2.2.6.RELEASE</sleuth-zipkin.version>
+
     </properties>
 
 
@@ -115,6 +117,12 @@
                 <version>${rubber.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-sleuth-zipkin</artifactId>
+                <version>${sleuth-zipkin.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -130,7 +138,6 @@
             <scope>import</scope>
         </dependency>
 
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
@@ -139,6 +146,11 @@
         <dependency>
             <groupId>com.rubber</groupId>
             <artifactId>common_utils</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-sleuth-zipkin</artifactId>
         </dependency>
 
     </dependencies>
