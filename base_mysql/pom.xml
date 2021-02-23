@@ -23,7 +23,6 @@
         </dependency>
 
 
-
         <!--数据库连接-->
         <dependency>
             <groupId>mysql</groupId>
@@ -61,13 +60,10 @@
             <artifactId>druid</artifactId>
         </dependency>
 
-
-
         <!--添加数据库分库分表插件-->
         <dependency>
             <groupId>io.shardingsphere</groupId>
             <artifactId>sharding-jdbc-core</artifactId>
-            <version>${shardingsphere.sharding.jdbc}</version>
         </dependency>
 
 

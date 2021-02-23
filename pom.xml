@@ -4,6 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.2.11.RELEASE</version>
+    </parent>
+
     <groupId>com.rubber</groupId>
     <artifactId>rubber_base_components</artifactId>
     <packaging>pom</packaging>
@@ -28,13 +34,8 @@
         <springboot.version>2.2.11.RELEASE</springboot.version>
         <springcloudalibaba.version>2.2.3.RELEASE</springcloudalibaba.version>
         <mybatis-plus.version>3.4.0</mybatis-plus.version>
-
         <shardingsphere.sharding.jdbc>3.1.0</shardingsphere.sharding.jdbc>
-
-        <jedis.version>3.3.0</jedis.version>
-
         <sleuth-zipkin.version>2.2.6.RELEASE</sleuth-zipkin.version>
-
     </properties>
 
 
@@ -50,32 +51,11 @@
                 <scope>import</scope>
             </dependency>
 
-            <!--springboot的版本-->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-parent</artifactId>
-                <version>${springboot.version}</version>
-            </dependency>
-
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter</artifactId>
                 <version>${springboot.version}</version>
             </dependency>
-
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-test</artifactId>
-                <version>${springboot.version}</version>
-                <scope>test</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-web</artifactId>
-                <version>${springboot.version}</version>
-            </dependency>
-
 
             <!-- 数据库的操作对象-->
             <!-- https://mvnrepository.com/artifact/com.baomidou/mybatis-plus-boot-starter -->
@@ -124,6 +104,13 @@
                 <version>${sleuth-zipkin.version}</version>
             </dependency>
 
+            <!--添加数据库分库分表插件-->
+            <dependency>
+                <groupId>io.shardingsphere</groupId>
+                <artifactId>sharding-jdbc-core</artifactId>
+                <version>${shardingsphere.sharding.jdbc}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -139,19 +126,28 @@
             <scope>import</scope>
         </dependency>
 
+        <!--boot启动类-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
 
+        <!--通用工具类-->
         <dependency>
             <groupId>com.rubber</groupId>
             <artifactId>common_utils</artifactId>
         </dependency>
 
+        <!--调用链路-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-sleuth-zipkin</artifactId>
+        </dependency>
+
+        <!--调用链路lombok-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
 
     </dependencies>
