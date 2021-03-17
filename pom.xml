@@ -21,6 +21,7 @@
         <module>base_all</module>
         <module>base_config</module>
         <module>base_log</module>
+        <module>base_mq</module>
     </modules>
 
 
