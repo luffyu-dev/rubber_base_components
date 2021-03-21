@@ -32,7 +32,14 @@ public abstract class BaseRubberConfigLocator implements PropertySourceLocator {
     private RubberProxyConfigProperties rubberProxyConfigProperties;
 
 
-    public abstract Set<String> createDataIds(Environment environment);
+    public  Set<String> createDataIds(Environment environment){
+        String[] activeProfiles = environment.getActiveProfiles();
+        if (activeProfiles.length <= 0){
+            activeProfiles = new String[]{"dev"};
+        }
+        return doCreateDataIds(environment,activeProfiles);
+    }
+    public abstract Set<String> doCreateDataIds(Environment environment,String[] activeProfiles);
 
 
     public abstract String configLocatorName();

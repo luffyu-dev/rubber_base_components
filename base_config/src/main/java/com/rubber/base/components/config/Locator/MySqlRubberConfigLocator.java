@@ -22,8 +22,7 @@ public class MySqlRubberConfigLocator extends BaseRubberConfigLocator {
     }
 
     @Override
-    public Set<String> createDataIds(Environment environment) {
-        String[] activeProfiles = environment.getActiveProfiles();
+    public Set<String> doCreateDataIds(Environment environment,String[] activeProfiles) {
         String dbSetNames = getRubberProxyConfigProperties().getDbSet();
         if (StrUtil.isEmpty(dbSetNames)){
             return null;

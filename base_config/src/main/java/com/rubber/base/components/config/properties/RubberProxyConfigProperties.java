@@ -31,5 +31,9 @@ public class RubberProxyConfigProperties {
      */
     private String rocketMqSet;
 
+    /**
+     * 是否开启调用链路
+     */
+    private boolean openZipkin;
 
 }

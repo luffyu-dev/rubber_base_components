@@ -1,6 +1,5 @@
 package com.rubber.base.components.config.Locator;
 
-import cn.hutool.core.util.StrUtil;
 import com.alibaba.cloud.nacos.NacosConfigManager;
 import com.rubber.base.components.config.properties.RubberProxyConfigProperties;
 import org.springframework.core.annotation.Order;
@@ -22,12 +21,12 @@ public class ZipkinRubberConfigLocator extends BaseRubberConfigLocator {
     }
 
     @Override
-    public Set<String> createDataIds(Environment environment) {
-        String[] activeProfiles = environment.getActiveProfiles();
-
+    public Set<String> doCreateDataIds(Environment environment,String[] activeProfiles) {
         Set<String> redisDataId = new HashSet<>();
-        for (String activeProfile:activeProfiles){
-            redisDataId.add(activeProfile+"-rubber-config-zipkin.yml");
+        if(getRubberProxyConfigProperties().isOpenZipkin()){
+            for (String activeProfile:activeProfiles){
+                redisDataId.add(activeProfile+"-rubber-config-zipkin.yml");
+            }
         }
         //dev-rubber-config-zipkin.yml
         return redisDataId;

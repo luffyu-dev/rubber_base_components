@@ -22,8 +22,7 @@ public class RedisRubberConfigLocator extends BaseRubberConfigLocator {
     }
 
     @Override
-    public Set<String> createDataIds(Environment environment) {
-        String[] activeProfiles = environment.getActiveProfiles();
+    public Set<String> doCreateDataIds(Environment environment,String[] activeProfiles) {
         String redisSetNames = getRubberProxyConfigProperties().getRedisSet();
         if (StrUtil.isEmpty(redisSetNames)){
             return null;
