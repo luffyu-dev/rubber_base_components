@@ -1,4 +1,4 @@
-package com.rubber.base.components.mysql.factory;
+package com.rubber.base.components.mysql.factory.db;
 
 
 import cn.hutool.core.collection.CollUtil;
@@ -27,12 +27,6 @@ import java.util.Map;
  * Created on 2020/12/26
  */
 public abstract class BaseRubberDateSourceFactory implements RubberDataSourceFactory {
-
-
-    /**
-     * 创建table的规则
-     */
-    public abstract void doCreateTableRule(ShardingRuleConfiguration shardingRuleConfiguration);
 
 
 
@@ -70,9 +64,6 @@ public abstract class BaseRubberDateSourceFactory implements RubberDataSourceFac
 
         //创建db规则
         Map<String, DataSource> shardingDbMap = doCreatDbRule(rubberDbProperties,shardingRuleConfiguration);
-
-        //创建库表的规则
-        doCreateTableRule(shardingRuleConfiguration);
 
         return new RubberShardingRuleBean(shardingDbMap,shardingRuleConfiguration);
     }

@@ -1,7 +1,7 @@
-package com.rubber.base.components.mysql.factory;
+package com.rubber.base.components.mysql.factory.db;
 
-import com.rubber.base.components.mysql.factory.impl.RubberClusterDataSourceFactory;
-import com.rubber.base.components.mysql.factory.impl.RubberSingleDataSourceFactory;
+import com.rubber.base.components.mysql.factory.db.impl.RubberClusterDataSourceFactory;
+import com.rubber.base.components.mysql.factory.db.impl.RubberSingleDataSourceFactory;
 import com.rubber.base.components.mysql.properties.RubberDbProperties;
 
 /**

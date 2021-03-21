@@ -1,16 +1,14 @@
-package com.rubber.base.components.mysql.factory.impl;
+package com.rubber.base.components.mysql.factory.db.impl;
 
 import com.rubber.base.components.mysql.exception.NotSingleDataSourceException;
-import com.rubber.base.components.mysql.factory.BaseRubberDateSourceFactory;
+import com.rubber.base.components.mysql.factory.db.BaseRubberDateSourceFactory;
 import com.rubber.base.components.mysql.properties.RubberDbProperties;
-import io.shardingsphere.api.config.rule.ShardingRuleConfiguration;
 
 /**
  * @author luffyu
  * Created on 2020/12/26
  */
 public class RubberSingleDataSourceFactory extends BaseRubberDateSourceFactory {
-
 
 
     /**
@@ -24,9 +22,4 @@ public class RubberSingleDataSourceFactory extends BaseRubberDateSourceFactory {
         }
     }
 
-
-    @Override
-    public void doCreateTableRule(ShardingRuleConfiguration shardingRuleConfiguration) {
-
-    }
 }

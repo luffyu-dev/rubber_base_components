@@ -25,11 +25,6 @@ public class RubberDbProperties {
 
 
     /**
-     * 分表key值信息
-     */
-    private String shardKey;
-
-    /**
      * 多种配置
      */
     private List<DbConnectProperties> connects;

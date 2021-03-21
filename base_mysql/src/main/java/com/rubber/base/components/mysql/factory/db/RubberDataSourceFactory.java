@@ -1,4 +1,4 @@
-package com.rubber.base.components.mysql.factory;
+package com.rubber.base.components.mysql.factory.db;
 
 import com.rubber.base.components.mysql.bean.RubberDruidDataSource;
 import com.rubber.base.components.mysql.bean.RubberShardingRuleBean;

@@ -1,3 +1,9 @@
+### MySQl配置模版
+
+##### 一：DB配置说明
+
+1. DB数据库参数说明
+、、、
 server:
   port: 8083
 
@@ -79,3 +85,26 @@ rubber:
             password: root
             driverClassName: com.mysql.cj.jdbc.Driver
             dbName: userDb01
+、、、
+
+
+2. DB数据配置说明
+   - 方式1：直接将上面的配置 写在 application.yml 中
+   - 方式2：通过nacos拉取
+    + 设置 在bootstrap中设置 rubber.proxy.config.dbSet ，例如为 userDB
+    + base_config ，会自动按照 ${}+-rubber-config-mysql-${rubber.proxy.config.dbSet}.yml 的文件地址拉去配置文件
+ 
+ 
+ ##### 二、table配置说明
+ 
+ 1. 数据配置
+、、、
+rubber:
+  proxy:
+    table-config:
+      - logicTableName: user_order #逻辑库表的名称
+        ruleType: SINGLE_DB_TEN_TABLE_HASH #分表的方式 具体@see RuleType
+        dbName: userDb #当前表所属的数据库名称
+        shardingColumn: id 当前分表的id
+        tableNum: 1 ##最大的表数字，最后会按照 table_${0..tableNum-1}的方式来生成表,最大支持的值为10
+、、、
