@@ -37,7 +37,7 @@ public abstract class BaseRubberDateSourceFactory implements RubberDataSourceFac
         List<DbConnectProperties> clusters = rubberDbProperties.getConnects();
         DbConfigProperties config = rubberDbProperties.getConfig();
         RubberDruidDataSource druidDataSource = new RubberDruidDataSource();
-        druidDataSource.setSetDbName(rubberDbProperties.getSetDbName());
+        druidDataSource.setInstanceName(rubberDbProperties.getInstanceName());
         druidDataSource.setShardingType(rubberDbProperties.getType());
 
         Map<String,DruidDataSource> clusterMap = new HashMap<>(clusters.size());

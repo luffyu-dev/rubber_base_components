@@ -10,6 +10,7 @@ import com.rubber.base.components.redis.exception.RedisInstanceNotFoundException
 import com.rubber.base.components.redis.exception.RedisInstanceTypeNotSupportException;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,36 +31,37 @@ import java.util.Set;
 @Slf4j
 @SuppressWarnings("Duplicates")
 @Configuration
-@ConfigurationProperties(prefix = "rubber.redis")
+@ConfigurationProperties(prefix = "rubber.proxy.config")
 public class RubberRedisConfig {
 
     /**
      * 当前选中的集群名称
      */
-    private String setName = "";
+    @Value("${rubber.proxy.set.redisInstance}")
+    private String setRedisInstance = "";
 
     /**
      * redis的实例配置
      */
-    private Map<String,RedisClusterConfigProperties> instance;
+    private Map<String,RedisClusterConfigProperties> redisInstances;
 
 
     @Bean
     public RedisClientProxy redisClientProxy(){
-        if (MapUtil.isEmpty(instance)){
+        if (MapUtil.isEmpty(redisInstances)){
             log.warn("[Redis Config]rubber.redis.instance is null. create default NoCacheClientProxy");
             return new NoCacheClientProxy();
         }
         RedisClusterConfigProperties configProperties = null;
-        if (StrUtil.isEmpty(setName)){
+        if (StrUtil.isEmpty(setRedisInstance)){
             //读取第一个
-            configProperties = instance.values().iterator().next();
+            configProperties = redisInstances.values().iterator().next();
         }else {
-            configProperties = instance.get(setName);
+            configProperties = redisInstances.get(setRedisInstance);
         }
         if (configProperties == null){
-            log.error("[Redis Config]rubber.redis.setName {} is error . can't find instance",setName);
-            throw new RedisInstanceNotFoundException("[Redis Config] "+setName + " can't find instance");
+            log.error("[Redis Config]rubber.redis.setName {} is error . can't find instance",setRedisInstance);
+            throw new RedisInstanceNotFoundException("[Redis Config] "+setRedisInstance + " can't find instance");
         }
         //获取node节点
         Set<HostAndPort> nodes = new HashSet<>();

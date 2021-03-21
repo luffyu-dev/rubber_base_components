@@ -1,10 +1,11 @@
 rubber:
   redis:
-    instance:
-      normal:
-        nodes:
-          - 127.0.0.1:6379
-        password: 123456
-        maxAttempts: 100
-        connectionTimeout: 8000
-        soTimeout: 1000
+    config:
+      redisInstances: #redis的实例配置
+        normal: #一个redis的实例
+          nodes:
+            - 127.0.0.1:6379
+          password: 123456
+          maxAttempts: 100
+          connectionTimeout: 8000
+          soTimeout: 1000

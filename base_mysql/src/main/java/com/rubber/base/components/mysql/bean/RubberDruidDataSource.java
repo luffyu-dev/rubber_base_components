@@ -16,7 +16,7 @@ public class RubberDruidDataSource {
     /**
      * 数据库的索引名称
      */
-    private String setDbName;
+    private String instanceName;
 
 
     /**

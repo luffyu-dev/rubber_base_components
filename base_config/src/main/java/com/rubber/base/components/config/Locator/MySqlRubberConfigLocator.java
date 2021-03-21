@@ -23,16 +23,16 @@ public class MySqlRubberConfigLocator extends BaseRubberConfigLocator {
 
     @Override
     public Set<String> doCreateDataIds(Environment environment,String[] activeProfiles) {
-        String dbSetNames = getRubberProxyConfigProperties().getDbSet();
-        if (StrUtil.isEmpty(dbSetNames)){
+        String dbInstances = getRubberProxyConfigProperties().getDbInstance();
+        if (StrUtil.isEmpty(dbInstances)){
             return null;
         }
-        String[] dbSetNameArray = dbSetNames.split(",");
+        String[] dbInstanceArray = dbInstances.split(",");
         Set<String> mysqlDataId = new HashSet<>();
         for (String activeProfile:activeProfiles){
             StringBuilder dataId = new StringBuilder(activeProfile+"-rubber-config-mysql-");
-            for (String dbSetName:dbSetNameArray){
-                dataId.append(dbSetName).append(".yml");
+            for (String dbInstance:dbInstanceArray){
+                dataId.append(dbInstance).append(".yml");
             }
             mysqlDataId.add(dataId.toString());
         }

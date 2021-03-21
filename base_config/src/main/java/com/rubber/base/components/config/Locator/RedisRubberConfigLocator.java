@@ -23,17 +23,17 @@ public class RedisRubberConfigLocator extends BaseRubberConfigLocator {
 
     @Override
     public Set<String> doCreateDataIds(Environment environment,String[] activeProfiles) {
-        String redisSetNames = getRubberProxyConfigProperties().getRedisSet();
-        if (StrUtil.isEmpty(redisSetNames)){
+        String redisInstances = getRubberProxyConfigProperties().getRedisInstance();
+        if (StrUtil.isEmpty(redisInstances)){
             return null;
         }
-        String[] redisSetNameArray = redisSetNames.split(",");
+        String[] redisInstanceNameArray = redisInstances.split(",");
 
         Set<String> redisDataId = new HashSet<>();
         for (String activeProfile:activeProfiles){
             StringBuilder dataId = new StringBuilder(activeProfile+"-rubber-config-redis-");
-            for (String redisSetName:redisSetNameArray){
-                dataId.append(redisSetName).append(".yml");
+            for (String redisInstance:redisInstanceNameArray){
+                dataId.append(redisInstance).append(".yml");
             }
             redisDataId.add(dataId.toString());
         }

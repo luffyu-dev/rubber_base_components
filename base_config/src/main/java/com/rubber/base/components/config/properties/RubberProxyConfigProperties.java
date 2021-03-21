@@ -13,27 +13,27 @@ import org.springframework.context.annotation.Configuration;
  */
 @Data
 @Configuration
-@ConfigurationProperties("rubber.proxy.config")
+@ConfigurationProperties("rubber.proxy.set")
 public class RubberProxyConfigProperties {
 
     /**
      * db配置的集合名称
      */
-    private String dbSet;
+    private String dbInstance;
 
     /**
      * redis配置的集合名称
      */
-    private String redisSet;
+    private String redisInstance;
 
     /**
      * mq配置的集合名称
      */
-    private String rocketMqSet;
+    private String rocketMqInstance;
 
     /**
      * 是否开启调用链路
      */
-    private boolean openZipkin;
+    private boolean openZipkin = true;
 
 }

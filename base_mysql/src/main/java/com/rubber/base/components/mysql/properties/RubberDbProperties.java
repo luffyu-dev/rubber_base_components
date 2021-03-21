@@ -13,9 +13,9 @@ import java.util.List;
 public class RubberDbProperties {
 
     /**
-     * db的名称，用于标示一个唯一的Db信息
+     * 实例名称
      */
-    private String setDbName;
+    private String instanceName;
 
     /**
      * db的类型

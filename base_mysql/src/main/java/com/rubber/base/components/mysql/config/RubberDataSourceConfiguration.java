@@ -32,13 +32,13 @@ import java.util.concurrent.ConcurrentHashMap;
 @Data
 @Slf4j
 @Configuration
-@ConfigurationProperties(prefix = "rubber.proxy")
+@ConfigurationProperties(prefix = "rubber.proxy.config")
 public class RubberDataSourceConfiguration {
 
-    private Map<String,RubberDbProperties> db;
+    private Map<String,RubberDbProperties> dbInstances;
 
-    @Value("${rubber.proxy.config.dbSet}")
-    private String dbSetName ;
+    @Value("${rubber.proxy.set.dbInstance}")
+    private String setDbInstance ;
 
     private List<TableConfigProperties> tableConfig;
 
@@ -46,10 +46,10 @@ public class RubberDataSourceConfiguration {
     @Primary
     @Bean(name = "dataSource")
     public DataSource dataSource(RubberTableRuleBuilder ruleBuilder) throws SQLException {
-        if (MapUtil.isEmpty(db) || StrUtil.isEmpty(dbSetName)){
+        if (MapUtil.isEmpty(dbInstances) || StrUtil.isEmpty(setDbInstance)){
             throw  new NotFoundDataSourceException();
         }
-        RubberDbProperties rubberDbProperties = db.get(dbSetName);
+        RubberDbProperties rubberDbProperties = dbInstances.get(setDbInstance);
         RubberDataSourceFactory builder = RubberDruidDataSourceFactoryBuilder.builder(rubberDbProperties);
         RubberShardingRuleBean dbRule = builder.createDbRule(rubberDbProperties);
         //创建表的规则
