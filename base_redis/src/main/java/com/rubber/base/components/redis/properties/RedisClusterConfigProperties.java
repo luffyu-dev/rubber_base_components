@@ -1,5 +1,6 @@
-package com.rubber.base.components.redis.config;
+package com.rubber.base.components.redis.properties;
 
+import com.rubber.base.components.redis.bean.RedisClusterType;
 import lombok.Data;
 import redis.clients.jedis.JedisPoolConfig;
 

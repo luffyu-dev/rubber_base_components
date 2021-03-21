@@ -3,11 +3,13 @@ package com.rubber.base.components.redis.config;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 import com.rubber.base.components.redis.RedisClientProxy;
+import com.rubber.base.components.redis.bean.RedisClusterType;
 import com.rubber.base.components.redis.client.JedisClientProxy;
 import com.rubber.base.components.redis.client.JedisClusterClientProxy;
 import com.rubber.base.components.redis.client.NoCacheClientProxy;
 import com.rubber.base.components.redis.exception.RedisInstanceNotFoundException;
 import com.rubber.base.components.redis.exception.RedisInstanceTypeNotSupportException;
+import com.rubber.base.components.redis.properties.RedisClusterConfigProperties;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,7 +45,7 @@ public class RubberRedisConfig {
     /**
      * redis的实例配置
      */
-    private Map<String,RedisClusterConfigProperties> redisInstances;
+    private Map<String, RedisClusterConfigProperties> redisInstances;
 
 
     @Bean

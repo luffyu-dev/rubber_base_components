@@ -1,4 +1,4 @@
-package com.rubber.base.components.redis.config;
+package com.rubber.base.components.redis.bean;
 
 /**
  * @author luffyu
