@@ -7,6 +7,7 @@ import com.rubber.base.components.mysql.exception.NotFoundDataSourceException;
 import com.rubber.base.components.mysql.factory.db.RubberDataSourceFactory;
 import com.rubber.base.components.mysql.factory.db.RubberDruidDataSourceFactoryBuilder;
 import com.rubber.base.components.mysql.factory.table.RubberTableRuleBuilder;
+import com.rubber.base.components.mysql.properties.DbConfigProperties;
 import com.rubber.base.components.mysql.properties.RubberDbProperties;
 import com.rubber.base.components.mysql.properties.TableConfigProperties;
 import io.shardingsphere.shardingjdbc.api.ShardingDataSourceFactory;
@@ -49,12 +50,25 @@ public class RubberDataSourceConfiguration {
         if (MapUtil.isEmpty(dbInstances) || StrUtil.isEmpty(setDbInstance)){
             throw  new NotFoundDataSourceException();
         }
-        RubberDbProperties rubberDbProperties = dbInstances.get(setDbInstance);
+        RubberDbProperties rubberDbProperties = getDbPropertyByName(setDbInstance);
         RubberDataSourceFactory builder = RubberDruidDataSourceFactoryBuilder.builder(rubberDbProperties);
         RubberShardingRuleBean dbRule = builder.createDbRule(rubberDbProperties);
         //创建表的规则
         ruleBuilder.createTableRule(dbRule);
         return ShardingDataSourceFactory.createDataSource(dbRule.getDataSourceMap(),dbRule.getShardingRuleConfiguration(),new ConcurrentHashMap<>(16),new Properties());
+    }
+
+    /**
+     * 通过配置的实例名称 获取实例的配置信息
+     * @param name 实例名称
+     * @return 返回配置信息
+     */
+    private RubberDbProperties getDbPropertyByName(String name){
+        RubberDbProperties rubberDbProperties = dbInstances.get(name);
+        if (rubberDbProperties.getConfig() == null){
+            rubberDbProperties.setConfig(new DbConfigProperties());
+        }
+        return rubberDbProperties;
     }
 
 

@@ -3,7 +3,7 @@
 ##### 一：DB配置说明
 
 1. DB数据库参数说明
-、、、
+```
 rubber:
   proxy:
     config:
@@ -43,7 +43,7 @@ rubber:
                   password: root
                   driverClassName: com.mysql.cj.jdbc.Driver
         USER_DB_CLUSTER: ## 实例2
-          setDbName: USER_DB
+          instanceName: USER_DB
           type: CLUSTER
           shardKey: uid
           config:
@@ -83,7 +83,7 @@ rubber:
               password: root
               driverClassName: com.mysql.cj.jdbc.Driver
               dbName: userDb01
-、、、
+```
 
 
 2. DB数据配置说明

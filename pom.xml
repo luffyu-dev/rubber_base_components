@@ -22,6 +22,7 @@
         <module>base_config</module>
         <module>base_log</module>
         <module>base_mq</module>
+        <module>base_proxy</module>
     </modules>
 
 
@@ -42,7 +43,6 @@
 
     <dependencyManagement>
         <dependencies>
-
             <!--spring-cloud-alibaba的版本-->
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
@@ -112,20 +112,48 @@
                 <version>${shardingsphere.sharding.jdbc}</version>
             </dependency>
 
+            <!-- rubber基础组件服务-->
+            <dependency>
+                <groupId>com.rubber</groupId>
+                <artifactId>base_config</artifactId>
+                <version>${rubber.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.rubber</groupId>
+                <artifactId>base_all</artifactId>
+                <version>${rubber.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.rubber</groupId>
+                <artifactId>base_log</artifactId>
+                <version>${rubber.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.rubber</groupId>
+                <artifactId>base_mq</artifactId>
+                <version>${rubber.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.rubber</groupId>
+                <artifactId>base_mysql</artifactId>
+                <version>${rubber.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.rubber</groupId>
+                <artifactId>base_proxy</artifactId>
+                <version>${rubber.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.rubber</groupId>
+                <artifactId>base_redis</artifactId>
+                <version>${rubber.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
 
     <dependencies>
-
-        <!--spring-cloud-alibaba的版本-->
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-alibaba-dependencies</artifactId>
-            <version>${springcloudalibaba.version}</version>
-            <type>pom</type>
-            <scope>import</scope>
-        </dependency>
 
         <!--boot启动类-->
         <dependency>
@@ -137,12 +165,6 @@
         <dependency>
             <groupId>com.rubber</groupId>
             <artifactId>common_utils</artifactId>
-        </dependency>
-
-        <!--调用链路-->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-sleuth-zipkin</artifactId>
         </dependency>
 
         <!--调用链路lombok-->
