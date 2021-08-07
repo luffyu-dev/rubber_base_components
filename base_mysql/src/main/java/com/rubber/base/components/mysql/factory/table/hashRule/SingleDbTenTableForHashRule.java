@@ -1,4 +1,4 @@
-package com.rubber.base.components.mysql.factory.table.impl;
+package com.rubber.base.components.mysql.factory.table.hashRule;
 
 import com.rubber.base.components.mysql.bean.RubberShardingRuleBean;
 import com.rubber.base.components.mysql.constant.RubberDbConstant;

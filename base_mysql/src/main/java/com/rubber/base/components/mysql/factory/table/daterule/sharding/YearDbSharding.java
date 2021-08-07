@@ -1,4 +1,4 @@
-package com.rubber.base.components.mysql.factory.table.sharding;
+package com.rubber.base.components.mysql.factory.table.daterule.sharding;
 
 import cn.hutool.core.date.DateUtil;
 import io.shardingsphere.api.algorithm.sharding.PreciseShardingValue;

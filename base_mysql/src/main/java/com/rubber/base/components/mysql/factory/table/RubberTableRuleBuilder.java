@@ -3,10 +3,10 @@ package com.rubber.base.components.mysql.factory.table;
 import cn.hutool.core.collection.CollUtil;
 import com.rubber.base.components.mysql.bean.RubberShardingRuleBean;
 import com.rubber.base.components.mysql.bean.RuleType;
-import com.rubber.base.components.mysql.factory.table.impl.SingleDbSingleTableRule;
-import com.rubber.base.components.mysql.factory.table.impl.SingleDbTenTableForHashRule;
-import com.rubber.base.components.mysql.factory.table.impl.TenDbTenTableForUserShardingRule;
-import com.rubber.base.components.mysql.factory.table.impl.YearDbDayTableRule;
+import com.rubber.base.components.mysql.factory.table.singlerule.SingleDbSingleTableRule;
+import com.rubber.base.components.mysql.factory.table.hashRule.SingleDbTenTableForHashRule;
+import com.rubber.base.components.mysql.factory.table.hashRule.TenDbTenTableForUserShardingRule;
+import com.rubber.base.components.mysql.factory.table.daterule.YearDbDayTableRule;
 import com.rubber.base.components.mysql.properties.TableConfigProperties;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.rubber.base.components.mysql.factory.table.sharding;
+package com.rubber.base.components.mysql.factory.table.hashRule.sharding;
 
 import com.rubber.base.components.mysql.exception.ShardingUidIllegalException;
 import io.shardingsphere.api.algorithm.sharding.PreciseShardingValue;
@@ -10,7 +10,7 @@ import java.util.Collection;
  * @author luffyu
  * Created on 2021/3/21
  */
-public class TenDbTenTableForUserDbSharding implements PreciseShardingAlgorithm<Integer> {
+public class TenDbTenTableForUserTableSharding implements PreciseShardingAlgorithm<Integer> {
     /**
      * Sharding.
      *
@@ -24,11 +24,11 @@ public class TenDbTenTableForUserDbSharding implements PreciseShardingAlgorithm<
         if (uid == null || uid < 10000){
             throw new ShardingUidIllegalException(uid+" is illegal");
         }
-        //读取倒数第三位数字
-        int index = uid / 100 % 10;
+        //读取对后一位数字
+        int index = uid % 10;
         String indexStr = "_0"+index;
         for (String each : availableTargetNames) {
-            if (each.endsWith("_"+indexStr)) {
+            if (each.endsWith(indexStr)) {
                 return each;
             }
         }

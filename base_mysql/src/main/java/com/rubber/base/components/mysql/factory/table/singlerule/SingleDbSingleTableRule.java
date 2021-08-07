@@ -1,10 +1,11 @@
-package com.rubber.base.components.mysql.factory.table.impl;
+package com.rubber.base.components.mysql.factory.table.singlerule;
 
 import com.rubber.base.components.mysql.bean.RubberShardingRuleBean;
 import com.rubber.base.components.mysql.exception.TableRuleDbNotFoundException;
 import com.rubber.base.components.mysql.factory.table.RubberTableRuleFactory;
 import com.rubber.base.components.mysql.properties.TableConfigProperties;
 import io.shardingsphere.api.config.rule.TableRuleConfiguration;
+import io.shardingsphere.api.config.strategy.NoneShardingStrategyConfiguration;
 
 /**
  * @author luffyu
@@ -24,6 +25,11 @@ public class SingleDbSingleTableRule implements RubberTableRuleFactory {
         if (dbRule.getDataSourceMap().get(dbName) == null){
             throw new TableRuleDbNotFoundException(dbName + " is not find in dbRules");
         }
-        return null;
+        TableRuleConfiguration tableRuleConfiguration = new TableRuleConfiguration();
+        tableRuleConfiguration.setLogicTable(tableConfig.getLogicTableName());
+        tableRuleConfiguration.setActualDataNodes(dbName+"."+tableConfig.getLogicTableName());
+        tableRuleConfiguration.setDatabaseShardingStrategyConfig(new NoneShardingStrategyConfiguration());
+        dbRule.getShardingRuleConfiguration().getTableRuleConfigs().add(tableRuleConfiguration);
+        return tableRuleConfiguration;
     }
 }

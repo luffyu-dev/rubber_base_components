@@ -1,10 +1,10 @@
-package com.rubber.base.components.mysql.factory.table.impl;
+package com.rubber.base.components.mysql.factory.table.hashRule;
 
 import com.rubber.base.components.mysql.bean.RubberShardingRuleBean;
 import com.rubber.base.components.mysql.exception.TableRuleDbNotFoundException;
 import com.rubber.base.components.mysql.factory.table.RubberTableRuleFactory;
-import com.rubber.base.components.mysql.factory.table.sharding.TenDbTenTableForUserDbSharding;
-import com.rubber.base.components.mysql.factory.table.sharding.TenDbTenTableForUserTableSharding;
+import com.rubber.base.components.mysql.factory.table.hashRule.sharding.TenDbTenTableForUserDbSharding;
+import com.rubber.base.components.mysql.factory.table.hashRule.sharding.TenDbTenTableForUserTableSharding;
 import com.rubber.base.components.mysql.properties.TableConfigProperties;
 import io.shardingsphere.api.config.rule.TableRuleConfiguration;
 import io.shardingsphere.api.config.strategy.StandardShardingStrategyConfiguration;
