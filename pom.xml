@@ -230,9 +230,14 @@
                 </includes>
                 <filtering>true</filtering>
             </resource>
+
+            <resource>
+                <directory>script</directory>
+                <targetPath>${project.build.directory}/script/</targetPath>
+            </resource>
+
         </resources>
         <plugins>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
