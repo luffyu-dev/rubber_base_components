@@ -13,9 +13,7 @@ import com.rubber.base.components.redis.properties.RedisClusterConfigProperties;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.JedisShardInfo;
 
@@ -32,8 +30,8 @@ import java.util.Set;
 @Data
 @Slf4j
 @SuppressWarnings("Duplicates")
-@Configuration
-@ConfigurationProperties(prefix = "rubber.proxy.config")
+//@Configuration
+//@ConfigurationProperties(prefix = "rubber.proxy.config")
 public class RubberRedisConfig {
 
     /**

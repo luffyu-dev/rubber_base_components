@@ -90,4 +90,17 @@ public class JedisClientProxy extends Jedis implements RedisClientProxy {
     public JedisClientProxy(URI uri, int connectionTimeout, int soTimeout, SSLSocketFactory sslSocketFactory, SSLParameters sslParameters, HostnameVerifier hostnameVerifier) {
         super(uri, connectionTimeout, soTimeout, sslSocketFactory, sslParameters, hostnameVerifier);
     }
+
+    /**
+     * 单台实例的方法
+     *
+     * @param key
+     * @param value
+     * @param seconds
+     */
+    @Override
+    public void set(String key, String value, int seconds) {
+        set(key,value);
+        expire(key,seconds);
+    }
 }

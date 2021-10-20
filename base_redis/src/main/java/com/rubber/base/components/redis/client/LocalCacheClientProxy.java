@@ -1,12 +1,27 @@
 package com.rubber.base.components.redis.client;
 
+import cn.hutool.cache.Cache;
+import cn.hutool.cache.impl.LFUCache;
 import com.rubber.base.components.redis.RedisClientProxy;
 
 /**
  * @author luffyu
- * Created on 2021/3/20
+ * Created on 2021/10/20
  */
-public class NoCacheClientProxy implements RedisClientProxy {
+public class LocalCacheClientProxy implements RedisClientProxy {
+
+
+    private Cache<String,String> cache;
+
+    private LocalCacheClientProxy(){
+        this.cache = new LFUCache<>(1000);
+    }
+
+
+    private LocalCacheClientProxy(Cache<String,String> cache){
+        this.cache = cache;
+    }
+
 
     /**
      * 单台实例的方法
@@ -16,28 +31,37 @@ public class NoCacheClientProxy implements RedisClientProxy {
      * @param seconds
      */
     @Override
+    @Deprecated
     public void set(String key, String value, int seconds) {
-
+        cache.put(key,value);
     }
 
     @Override
     public String get(String key) {
-        return null;
+        return cache.get(key);
     }
 
     @Override
     public Boolean exists(String key) {
-        return null;
+        return cache.containsKey(key);
     }
 
     @Override
     public Long del(String... keys) {
-        return null;
+        Long l1 = 0L;
+        for (String s:keys){
+            l1 += del(s);
+        }
+        return l1;
     }
 
     @Override
     public Long del(String key) {
-        return null;
+        if (cache.containsKey(key)) {
+            cache.remove(key);
+            return 1L;
+        }
+        return 0L;
     }
 
     @Override

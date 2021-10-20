@@ -104,4 +104,17 @@ public class JedisClusterClientProxy extends JedisCluster implements RedisClient
     public JedisClusterClientProxy(Set<HostAndPort> jedisClusterNode, int connectionTimeout, int soTimeout, int maxAttempts, String password, String clientName, GenericObjectPoolConfig poolConfig, boolean ssl, SSLSocketFactory sslSocketFactory, SSLParameters sslParameters, HostnameVerifier hostnameVerifier, JedisClusterHostAndPortMap hostAndPortMap) {
         super(jedisClusterNode, connectionTimeout, soTimeout, maxAttempts, password, clientName, poolConfig, ssl, sslSocketFactory, sslParameters, hostnameVerifier, hostAndPortMap);
     }
+
+    /**
+     * 单台实例的方法
+     *
+     * @param key
+     * @param value
+     * @param seconds
+     */
+    @Override
+    public void set(String key, String value, int seconds) {
+        set(key,value);
+        expire(key,seconds);
+    }
 }
