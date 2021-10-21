@@ -13,12 +13,12 @@ public class LocalCacheClientProxy implements RedisClientProxy {
 
     private Cache<String,String> cache;
 
-    private LocalCacheClientProxy(){
+    public LocalCacheClientProxy(){
         this.cache = new LFUCache<>(1000);
     }
 
 
-    private LocalCacheClientProxy(Cache<String,String> cache){
+    public LocalCacheClientProxy(Cache<String,String> cache){
         this.cache = cache;
     }
 

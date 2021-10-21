@@ -23,6 +23,7 @@
         <module>base_log</module>
         <module>base_mq</module>
         <module>base_proxy</module>
+        <module>base_utils</module>
     </modules>
 
 
@@ -146,6 +147,13 @@
             <dependency>
                 <groupId>com.rubber</groupId>
                 <artifactId>base_redis</artifactId>
+                <version>${rubber.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>com.rubber</groupId>
+                <artifactId>base_utils</artifactId>
                 <version>${rubber.version}</version>
             </dependency>
 
