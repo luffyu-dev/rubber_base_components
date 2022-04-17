@@ -15,26 +15,32 @@ import java.util.Set;
 @Order(3)
 public class ZipkinRubberConfigLocator extends BaseRubberConfigLocator {
 
+    /**
+     * mysql的配置前缀
+     */
+    private static final String ZIPKIN_CONFIG_PREFIX = "ZIPKIN";
+
 
     public ZipkinRubberConfigLocator(NacosConfigManager nacosConfigManager, RubberProxyConfigProperties rubberProxyConfigProperties) {
         super(nacosConfigManager,rubberProxyConfigProperties);
     }
 
+    /**
+     * 获取集群的key指
+     *
+     * @return 返回一个逗号隔开的集群
+     */
     @Override
-    public Set<String> doCreateDataIds(Environment environment,String[] activeProfiles) {
-        Set<String> redisDataId = new HashSet<>();
+    public String getInstanceKey() {
         if(getRubberProxyConfigProperties().isOpenZipkin()){
-            for (String activeProfile:activeProfiles){
-                redisDataId.add(activeProfile+"-rubber-config-zipkin.yml");
-            }
+            return "default";
         }
-        //dev-rubber-config-zipkin.yml
-        return redisDataId;
+        return null;
     }
 
     @Override
     public String configLocatorName() {
-        return "rubberConfigZipkin";
+        return ZIPKIN_CONFIG_PREFIX;
     }
 
 

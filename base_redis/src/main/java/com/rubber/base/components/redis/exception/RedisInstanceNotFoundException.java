@@ -1,6 +1,7 @@
 package com.rubber.base.components.redis.exception;
 
-import com.rubber.common.utils.exception.BaseRuntimeException;
+
+import com.rubber.base.components.util.exception.BaseRuntimeException;
 
 /**
  * redis的实例无法找到的异常

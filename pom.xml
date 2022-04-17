@@ -28,7 +28,7 @@
 
 
     <properties>
-        <rubber.version>1.0-SNAPSHOT</rubber.version>
+        <rubber.version>1.1.0-ALPHA</rubber.version>
         <java.version>1.8</java.version>
         <log4j.version>1.2.17</log4j.version>
         <lombok.version>1.18.16</lombok.version>
@@ -39,6 +39,9 @@
         <mybatis-plus.version>3.4.0</mybatis-plus.version>
         <shardingsphere.sharding.jdbc>3.1.0</shardingsphere.sharding.jdbc>
         <sleuth-zipkin.version>2.2.6.RELEASE</sleuth-zipkin.version>
+        <hutool.version>5.4.6</hutool.version>
+        <fastjson.version>1.2.74</fastjson.version>
+        <log4j.version>1.2.17</log4j.version>
     </properties>
 
 
@@ -94,11 +97,6 @@
                 <version>${lombok.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>com.rubber</groupId>
-                <artifactId>common_utils</artifactId>
-                <version>${rubber.version}</version>
-            </dependency>
 
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
@@ -163,6 +161,28 @@
                 <version>${springcloudalibaba.version}</version>
             </dependency>
 
+
+            <!-- https://mvnrepository.com/artifact/cn.hutool/hutool-all -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+
+
+            <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -175,18 +195,15 @@
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
 
-        <!--通用工具类-->
-        <dependency>
-            <groupId>com.rubber</groupId>
-            <artifactId>common_utils</artifactId>
-        </dependency>
-
         <!--调用链路lombok-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
     </dependencies>
 
     <profiles>

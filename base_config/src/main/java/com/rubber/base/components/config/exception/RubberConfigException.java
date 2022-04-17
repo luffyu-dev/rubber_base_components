@@ -1,6 +1,7 @@
 package com.rubber.base.components.config.exception;
 
-import com.rubber.common.utils.exception.BaseRuntimeException;
+
+import com.rubber.base.components.util.exception.BaseRuntimeException;
 
 /**
  * @author luffyu

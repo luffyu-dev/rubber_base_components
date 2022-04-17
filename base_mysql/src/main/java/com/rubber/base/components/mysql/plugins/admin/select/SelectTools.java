@@ -4,10 +4,10 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.rubber.base.components.mysql.plugins.admin.bean.BaseEntity;
 import com.rubber.base.components.mysql.utils.ReflectionUtils;
-import com.rubber.common.utils.exception.BaseException;
-import com.rubber.common.utils.exception.BaseRuntimeException;
-import com.rubber.common.utils.result.code.SysCode;
-import com.rubber.common.utils.result.exception.BaseResultRunTimeException;
+import com.rubber.base.components.util.exception.BaseException;
+import com.rubber.base.components.util.exception.BaseRuntimeException;
+import com.rubber.base.components.util.result.code.SysCode;
+import com.rubber.base.components.util.result.exception.BaseResultRunTimeException;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 

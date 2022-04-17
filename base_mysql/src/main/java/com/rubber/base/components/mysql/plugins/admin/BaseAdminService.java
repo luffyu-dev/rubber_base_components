@@ -11,8 +11,8 @@ import com.rubber.base.components.mysql.plugins.admin.page.PageTools;
 import com.rubber.base.components.mysql.plugins.admin.select.SelectModel;
 import com.rubber.base.components.mysql.plugins.admin.select.SelectTools;
 import com.rubber.base.components.mysql.utils.ReflectionUtils;
-import com.rubber.common.utils.result.code.SysCode;
-import com.rubber.common.utils.result.exception.BaseResultRunTimeException;
+import com.rubber.base.components.util.result.code.SysCode;
+import com.rubber.base.components.util.result.exception.BaseResultRunTimeException;
 
 import java.util.List;
 import java.util.Map;

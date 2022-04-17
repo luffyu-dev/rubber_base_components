@@ -79,6 +79,12 @@
             <version>2.3.28</version>
         </dependency>
 
+
+        <dependency>
+            <groupId>com.rubber</groupId>
+            <artifactId>base_utils</artifactId>
+        </dependency>
+
     </dependencies>
 
 

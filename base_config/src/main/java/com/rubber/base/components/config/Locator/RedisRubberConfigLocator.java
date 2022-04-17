@@ -1,13 +1,8 @@
 package com.rubber.base.components.config.Locator;
 
-import cn.hutool.core.util.StrUtil;
 import com.alibaba.cloud.nacos.NacosConfigManager;
 import com.rubber.base.components.config.properties.RubberProxyConfigProperties;
 import org.springframework.core.annotation.Order;
-import org.springframework.core.env.Environment;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author luffyu
@@ -16,34 +11,29 @@ import java.util.Set;
 @Order(2)
 public class RedisRubberConfigLocator extends BaseRubberConfigLocator {
 
+    /**
+     * mysql的配置前缀
+     */
+    private static final String REDIS_CONFIG_PREFIX = "REDIS";
+
 
     public RedisRubberConfigLocator(NacosConfigManager nacosConfigManager, RubberProxyConfigProperties rubberProxyConfigProperties) {
         super(nacosConfigManager,rubberProxyConfigProperties);
     }
 
+    /**
+     * 获取集群的key指
+     *
+     * @return 返回一个逗号隔开的集群
+     */
     @Override
-    public Set<String> doCreateDataIds(Environment environment,String[] activeProfiles) {
-        String redisInstances = getRubberProxyConfigProperties().getRedisInstance();
-        if (StrUtil.isEmpty(redisInstances)){
-            return null;
-        }
-        String[] redisInstanceNameArray = redisInstances.split(",");
-
-        Set<String> redisDataId = new HashSet<>();
-        for (String activeProfile:activeProfiles){
-            StringBuilder dataId = new StringBuilder(activeProfile+"-rubber-config-redis-");
-            for (String redisInstance:redisInstanceNameArray){
-                dataId.append(redisInstance).append(".yml");
-            }
-            redisDataId.add(dataId.toString());
-        }
-        //rubber-config-mysql-dev-userDb.yml
-        return redisDataId;
+    public String getInstanceKey() {
+        return getRubberProxyConfigProperties().getRedisInstance();
     }
 
     @Override
     public String configLocatorName() {
-        return "rubberConfigRedis";
+        return REDIS_CONFIG_PREFIX;
     }
 
 

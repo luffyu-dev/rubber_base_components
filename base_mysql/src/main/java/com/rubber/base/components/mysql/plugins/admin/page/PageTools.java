@@ -5,8 +5,8 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rubber.base.components.mysql.plugins.admin.bean.BaseEntity;
-import com.rubber.common.utils.result.code.SysCode;
-import com.rubber.common.utils.result.exception.BaseResultRunTimeException;
+import com.rubber.base.components.util.result.code.SysCode;
+import com.rubber.base.components.util.result.exception.BaseResultRunTimeException;
 
 import java.util.Map;
 
