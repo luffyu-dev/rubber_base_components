@@ -49,11 +49,11 @@
             <groupId>com.rubber</groupId>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <artifactId>base_redis</artifactId>-->
-<!--            <groupId>com.rubber</groupId>-->
-<!--            <version>${rubber.version}</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.rubber</groupId>
+            <artifactId>base_utils</artifactId>
+        </dependency>
+
     </dependencies>
 
 

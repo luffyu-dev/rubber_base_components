@@ -13,5 +13,11 @@
 
     <artifactId>base_mq</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.rubber</groupId>
+            <artifactId>base_utils</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

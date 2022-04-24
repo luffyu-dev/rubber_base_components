@@ -24,6 +24,7 @@
         <module>base_mq</module>
         <module>base_proxy</module>
         <module>base_utils</module>
+        <module>rubber_basic_web_boot_start</module>
     </modules>
 
 
@@ -42,11 +43,15 @@
         <hutool.version>5.4.6</hutool.version>
         <fastjson.version>1.2.74</fastjson.version>
         <log4j.version>1.2.17</log4j.version>
+        <apache.dubbo.version>2.7.10</apache.dubbo.version>
     </properties>
 
 
     <dependencyManagement>
         <dependencies>
+
+            <!-- ****************************************第三方jar包**************************************** -->
+
             <!--spring-cloud-alibaba的版本-->
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
@@ -111,7 +116,53 @@
                 <version>${shardingsphere.sharding.jdbc}</version>
             </dependency>
 
-            <!-- rubber基础组件服务-->
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-context</artifactId>
+                <version>${springcloudalibaba.version}</version>
+            </dependency>
+
+
+            <!-- https://mvnrepository.com/artifact/cn.hutool/hutool-all -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+
+
+            <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
+
+
+            <!-- https://mvnrepository.com/artifact/org.apache.dubbo/dubbo-spring-boot-starter -->
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo-spring-boot-starter</artifactId>
+                <version>${apache.dubbo.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.apache.dubbo/dubbo-registry-nacos -->
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo-registry-nacos</artifactId>
+                <version>${apache.dubbo.version}</version>
+            </dependency>
+
+            <!-- ****************************************rubber基础组件服务**************************************** -->
+
             <dependency>
                 <groupId>com.rubber</groupId>
                 <artifactId>base_config</artifactId>
@@ -148,7 +199,6 @@
                 <version>${rubber.version}</version>
             </dependency>
 
-
             <dependency>
                 <groupId>com.rubber</groupId>
                 <artifactId>base_utils</artifactId>
@@ -156,33 +206,12 @@
             </dependency>
 
             <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-context</artifactId>
-                <version>${springcloudalibaba.version}</version>
+                <groupId>com.rubber</groupId>
+                <artifactId>rubber_basic_web_boot_start</artifactId>
+                <version>${rubber.version}</version>
             </dependency>
 
 
-            <!-- https://mvnrepository.com/artifact/cn.hutool/hutool-all -->
-            <dependency>
-                <groupId>cn.hutool</groupId>
-                <artifactId>hutool-all</artifactId>
-                <version>${hutool.version}</version>
-            </dependency>
-
-
-            <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>fastjson</artifactId>
-                <version>${fastjson.version}</version>
-            </dependency>
-
-
-            <dependency>
-                <groupId>log4j</groupId>
-                <artifactId>log4j</artifactId>
-                <version>${log4j.version}</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 

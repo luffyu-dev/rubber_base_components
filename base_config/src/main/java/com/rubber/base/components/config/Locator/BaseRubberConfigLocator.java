@@ -46,37 +46,7 @@ public abstract class BaseRubberConfigLocator implements PropertySourceLocator {
     private RubberProxyConfigProperties rubberProxyConfigProperties;
 
 
-    /**
-     * 获取集群的key指
-     * @return 返回一个逗号隔开的集群
-     */
-    public abstract String getInstanceKey();
-
-    /**
-     * 获取资源的名称
-     */
-    public abstract String configLocatorName();
-
-
-    public  Set<String> createDataIds(Environment environment){
-        String dbInstances = getInstanceKey();
-        if (StrUtil.isEmpty(dbInstances)){
-            return null;
-        }
-        String[] dbInstanceArray = dbInstances.split(",");
-        Set<String> mysqlDataId = new HashSet<>();
-        for (String dbInstance:dbInstanceArray){
-            StringBuilder dataId = new StringBuilder(BASE_CONFIG_PREFIX);
-            dataId.append(BASE_LINK)
-                    .append(configLocatorName())
-                    .append(BASE_LINK)
-                    .append(dbInstance)
-                    .append(BASE_CONFIG_SUFFIX_FILE_TYPE);
-            mysqlDataId.add(dataId.toString());
-        }
-        //rubber-config-mysql-dev-userDb.yml
-        return mysqlDataId;
-    }
+    public  abstract Set<String> createDataIds(Environment environment);
 
 
     public BaseRubberConfigLocator(NacosConfigManager nacosConfigManager,RubberProxyConfigProperties proxyConfig) {
@@ -90,11 +60,13 @@ public abstract class BaseRubberConfigLocator implements PropertySourceLocator {
     @Override
     public PropertySource<?> locate(Environment environment) {
         try {
-            Map<String, Object> configData = initConfigData(environment);
-            if (configData == null){
-                configData = new HashMap<>(2);
+            Set<String> dataIds = createDataIds(environment);
+            log.info("BaseRubberConfigLocator start get config ids = {}",dataIds);
+            if (CollUtil.isEmpty(dataIds)){
+                return null;
             }
-            return new MapPropertySource(configLocatorName(), configData);
+            Map<String, Object> configData = initConfigData(dataIds);
+            return new MapPropertySource("rubber", configData);
         }catch (Exception e){
             throw new RuntimeException();
         }
@@ -103,25 +75,31 @@ public abstract class BaseRubberConfigLocator implements PropertySourceLocator {
     /**
      * 加载配置文件
      */
-    private Map<String,Object> initConfigData(Environment environment){
-        Set<String> dataIds = createDataIds(environment);
-        if (CollUtil.isEmpty(dataIds)){
-            return null;
-        }
+    private Map<String,Object> initConfigData(Set<String> dataIds){
         Map<String,Object> result = new HashMap<>(dataIds.size());
         for (String dataId:dataIds){
-            try {
-                log.info("rubber config locator dataId={},className={}",dataId,this.getClass().getName());
-                String value = nacosConfigManager.getConfigService().getConfig(dataId, nacosConfigProperties.getGroup(), nacosConfigProperties.getTimeout());
-                if (StrUtil.isEmpty(value)){
-                    throw new RubberConfigException(" config file " + dataId + "not find");
-                }
-                Map<String, Object> p = NacosDataParserHandler.getInstance()
-                        .parseNacosData(value, nacosConfigProperties.getFileExtension());
-                result.putAll(p);
-            }catch (Exception e){
-                e.printStackTrace();
+            result.putAll(getConfigData(dataId));
+        }
+        return result;
+    }
+
+
+    /**
+     * 加载配置文件
+     */
+    private Map<String,Object> getConfigData(String dataId){
+        Map<String,Object> result = new HashMap<>(16);
+        try {
+            log.info("rubber config locator dataId={},className={}",dataId,this.getClass().getName());
+            String value = nacosConfigManager.getConfigService().getConfig(dataId, nacosConfigProperties.getGroup(), nacosConfigProperties.getTimeout());
+            if (StrUtil.isEmpty(value)){
+                throw new RubberConfigException(" config file " + dataId + "not find");
             }
+            Map<String, Object> p = NacosDataParserHandler.getInstance()
+                    .parseNacosData(value, nacosConfigProperties.getFileExtension());
+            result.putAll(p);
+        }catch (Exception e){
+            e.printStackTrace();
         }
         return result;
     }

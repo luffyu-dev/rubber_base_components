@@ -30,5 +30,10 @@
             <artifactId>base_config</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.rubber</groupId>
+            <artifactId>base_utils</artifactId>
+        </dependency>
+
     </dependencies>
 </project>
