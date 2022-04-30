@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author luffyu
  * Created on 2022/4/21
  */@Data
-public class RubberBaseResponse implements IResultHandle, Serializable {
+public class RubberBaseResponse implements Serializable {
 
     /**
      * code信息
@@ -38,13 +38,4 @@ public class RubberBaseResponse implements IResultHandle, Serializable {
     private Object data;
 
 
-    /**
-     * 网关层数据
-     *
-     * @return 返回网关数据
-     */
-    @Override
-    public Object getSysData() {
-        return system;
-    }
 }

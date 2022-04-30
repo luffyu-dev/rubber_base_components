@@ -116,7 +116,7 @@ public class ResultMsg implements IResultHandle, Serializable {
 
     @Override
     public Object getSysData() {
-        return this.sysData;
+        return null;
     }
 
 

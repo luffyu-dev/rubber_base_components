@@ -4,7 +4,10 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.cloud.nacos.NacosConfigManager;
 import com.alibaba.cloud.nacos.NacosConfigProperties;
+import com.alibaba.cloud.nacos.NacosPropertySourceRepository;
+import com.alibaba.cloud.nacos.client.NacosPropertySource;
 import com.alibaba.cloud.nacos.parser.NacosDataParserHandler;
+import com.alibaba.nacos.api.exception.NacosException;
 import com.rubber.base.components.config.exception.RubberConfigException;
 import com.rubber.base.components.config.properties.RubberProxyConfigProperties;
 import lombok.Getter;
@@ -13,11 +16,10 @@ import org.springframework.cloud.bootstrap.config.PropertySourceLocator;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.PropertySource;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author luffyu
@@ -95,13 +97,38 @@ public abstract class BaseRubberConfigLocator implements PropertySourceLocator {
             if (StrUtil.isEmpty(value)){
                 throw new RubberConfigException(" config file " + dataId + "not find");
             }
-            Map<String, Object> p = NacosDataParserHandler.getInstance()
-                    .parseNacosData(value, nacosConfigProperties.getFileExtension());
-            result.putAll(p);
+            List<PropertySource<?>> data = NacosDataParserHandler.getInstance()
+                    .parseNacosData(dataId,value, nacosConfigProperties.getFileExtension());
+            if (data == null){
+                return result;
+            }
+            return getSourceMap(nacosConfigProperties.getGroup(),dataId,data);
         }catch (Exception e){
             e.printStackTrace();
+            return result;
         }
-        return result;
+    }
+
+
+
+    private static Map<String, Object> getSourceMap(String group, String dataId,
+                                                    List<PropertySource<?>> propertySources) {
+        if (CollectionUtils.isEmpty(propertySources)) {
+            return Collections.emptyMap();
+        }
+        // If only one, return the internal element, otherwise wrap it.
+        if (propertySources.size() == 1) {
+            PropertySource propertySource = propertySources.get(0);
+            if (propertySource != null && propertySource.getSource() instanceof Map) {
+                return (Map<String, Object>) propertySource.getSource();
+            }
+        }
+        // If it is multiple, it will be returned as it is, and the internal elements
+        // cannot be directly retrieved, so the user needs to implement the retrieval
+        // logic by himself
+        return Collections.singletonMap(
+                String.join(NacosConfigProperties.COMMAS, dataId, group),
+                propertySources);
     }
 
 }

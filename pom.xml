@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.11.RELEASE</version>
+        <version>2.3.2.RELEASE</version>
     </parent>
 
     <groupId>com.rubber</groupId>
@@ -25,6 +25,7 @@
         <module>base_proxy</module>
         <module>base_utils</module>
         <module>rubber_basic_web_boot_start</module>
+        <module>rubber_basic_service_boot_start</module>
     </modules>
 
 
@@ -35,15 +36,15 @@
         <lombok.version>1.18.16</lombok.version>
         <mysql-connector.version>8.0.21</mysql-connector.version>
         <druid.version>1.2.1</druid.version>
-        <springboot.version>2.2.11.RELEASE</springboot.version>
-        <springcloudalibaba.version>2.2.3.RELEASE</springcloudalibaba.version>
+        <springboot.version>2.3.2.RELEASE</springboot.version>
+        <springcloudalibaba.version>2.2.7.RELEASE</springcloudalibaba.version>
         <mybatis-plus.version>3.4.0</mybatis-plus.version>
         <shardingsphere.sharding.jdbc>3.1.0</shardingsphere.sharding.jdbc>
         <sleuth-zipkin.version>2.2.6.RELEASE</sleuth-zipkin.version>
         <hutool.version>5.4.6</hutool.version>
         <fastjson.version>1.2.74</fastjson.version>
         <log4j.version>1.2.17</log4j.version>
-        <apache.dubbo.version>2.7.10</apache.dubbo.version>
+        <apache.dubbo.version>3.0.3</apache.dubbo.version>
     </properties>
 
 
@@ -211,6 +212,12 @@
                 <version>${rubber.version}</version>
             </dependency>
 
+
+            <dependency>
+                <groupId>com.rubber</groupId>
+                <artifactId>rubber_basic_service_boot_start</artifactId>
+                <version>${rubber.version}</version>
+            </dependency>
 
         </dependencies>
     </dependencyManagement>

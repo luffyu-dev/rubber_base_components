@@ -27,6 +27,7 @@ public enum SysCode implements ICodeHandle{
      * 2-**-**-** 表示服务系统异常的提示
      */
     SYSTEM_ERROR("2000000","系统错误"),
+    SYSTEM_BUS("2000001","系统繁忙"),
 
 
     /**

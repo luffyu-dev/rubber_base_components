@@ -1,7 +1,6 @@
-package com.rubber.basic.web.starter;
+package com.rubber.basic.service.starter;
 
 import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
-import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 @EnableDubbo
 @Configuration
 @ComponentScan("com.rubber.**")
-@ServletComponentScan
-public class RubberBasicWebAuthStarter {
+public class RubberBasicServiceAuthStarter {
 
 }
