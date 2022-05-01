@@ -1,6 +1,7 @@
 package com.rubber.base.components.util.result;
 
 import lombok.Data;
+import java.io.Serializable;
 
 /**
  * session的相关信息
@@ -9,7 +10,7 @@ import lombok.Data;
  *
  */
 @Data
-public class RubberSession {
+public class RubberSession implements Serializable {
 
 
     /**
