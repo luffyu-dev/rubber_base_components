@@ -110,6 +110,9 @@ public class MybatisBaseCodeGenerator {
         if (StrUtil.isNotEmpty(configBean.getBaseServiceImpl())){
             strategy.setSuperServiceImplClass(configBean.getBaseServiceImpl());
         }
+        if (StrUtil.isNotEmpty(configBean.getBaseService())){
+            strategy.setSuperServiceClass(configBean.getBaseService());
+        }
         //是否开启 lombok 开启之后 文件中没有get set方法
         strategy.setEntityLombokModel(configBean.isLombok);
         //对于controller 是否开启 @RestController注解
@@ -149,6 +152,7 @@ public class MybatisBaseCodeGenerator {
         private String packageParent = "";
         private String baseEntityClass = "com.rubber.base.components.mysql.plugins.admin.bean.BaseEntity";
         private String baseServiceImpl = "com.rubber.base.components.mysql.plugins.admin.BaseAdminService";
+        private String baseService = "com.rubber.base.components.mysql.plugins.admin.IBaseAdminService";
         private boolean isLombok = true;
         private boolean isRestController = true;
         private String tablePrefix = "t_";
