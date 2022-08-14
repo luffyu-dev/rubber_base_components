@@ -2,7 +2,7 @@ package com.rubber.base.components.mysql.plugins.admin;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson2.JSON;
 import com.rubber.base.components.mysql.plugins.admin.page.PageModel;
 import com.rubber.base.components.util.result.code.SysCode;
 import com.rubber.base.components.util.result.exception.BaseResultRunTimeException;

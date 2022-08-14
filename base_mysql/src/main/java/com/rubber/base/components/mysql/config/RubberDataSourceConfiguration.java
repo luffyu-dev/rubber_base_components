@@ -27,13 +27,16 @@ import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ *
+ * 在分页条件下 和 sharding-jdbc的适配存在问题，需要排查
  * @author luffyu
  * Created on 2020/12/27
  */
+@Deprecated
 @Data
 @Slf4j
-@Configuration
-@ConfigurationProperties(prefix = "rubber.proxy.config")
+//@Configuration
+//@ConfigurationProperties(prefix = "rubber.proxy.config")
 public class RubberDataSourceConfiguration {
 
     private Map<String,RubberDbProperties> dbInstances;
