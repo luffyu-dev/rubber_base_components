@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rubber.base.components.mysql.plugins.admin.bean.BaseEntity;
+import com.rubber.base.components.mysql.plugins.admin.select.FieldInfoBean;
 import com.rubber.base.components.util.result.code.SysCode;
 import com.rubber.base.components.util.result.exception.BaseResultRunTimeException;
 
@@ -50,7 +51,7 @@ public class PageTools {
      * @param <T> 实体类
      * @return
      */
-    public static <T extends BaseEntity> IPage<T> build(PageModel pagerModel, Map<String,Class<?>> clzFiles){
+    public static <T extends BaseEntity> IPage<T> build(PageModel pagerModel, Map<String, FieldInfoBean> clzFiles){
         if(pagerModel.getOrder() != null && pagerModel.getSort() != null && clzFiles != null){
             for (String s : pagerModel.getSort()) {
                 if(clzFiles.get(StrUtil.toCamelCase(s)) == null){

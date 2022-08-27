@@ -3,6 +3,7 @@ package com.rubber.base.components.mysql.utils;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.rubber.base.components.mysql.plugins.admin.select.FieldInfoBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
@@ -107,15 +108,13 @@ public class ReflectionUtils {
         return clz != null && clz.getClassLoader() == null;
     }
 
-
-
     /**
      * 通过反射拿到类的私有信息和类型
      * @param clz 类名
      * @return
      */
-    public static Map<String,Class<?>> getDBEntityFieldsName(Class<?> clz) {
-        Map<String,Class<?>> map = new HashMap<>(20);
+    public static Map<String, FieldInfoBean> getDBEntityFieldsName(Class<?> clz) {
+        Map<String,FieldInfoBean> map = new HashMap<>(20);
         Field[] fields = clz.getDeclaredFields();
         for(Field field:fields){
             TableField tableField = field.getAnnotation(TableField.class);
@@ -125,7 +124,10 @@ public class ReflectionUtils {
                     continue;
                 }
             }
-            map.put(field.getName(), field.getType());
+            FieldInfoBean fieldInfoBean = new FieldInfoBean();
+            fieldInfoBean.setFieldClass(field.getType());
+            fieldInfoBean.setTableField(tableField);
+            map.put(field.getName(), fieldInfoBean);
         }
         return map;
     }

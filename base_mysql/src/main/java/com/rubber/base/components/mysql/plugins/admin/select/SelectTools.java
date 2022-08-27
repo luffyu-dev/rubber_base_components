@@ -30,7 +30,7 @@ public class SelectTools {
     public static  <T extends BaseEntity> QueryWrapper<T> creatSearchWrapper(List<SelectModel> selectModels, Class<T> clz) throws BaseRuntimeException {
         QueryWrapper<T> queryWrapper = new QueryWrapper<>();
         if(!CollectionUtils.isEmpty(selectModels)){
-            Map<String,Class<?>> clzFiles = ReflectionUtils.getDBEntityFieldsName(clz);
+            Map<String,FieldInfoBean> clzFiles = ReflectionUtils.getDBEntityFieldsName(clz);
             for(SelectModel compareModel:selectModels){
                 creatSearchWrapper(queryWrapper,clzFiles,compareModel);
             }
@@ -44,7 +44,7 @@ public class SelectTools {
      * @param <T> entit的类名称
      * @return 返回查询的参数
      */
-    public static  <T extends BaseEntity> QueryWrapper<T> creatSearchWrapper(List<SelectModel> selectModels, Map<String,Class<?>> clzFiles) throws BaseRuntimeException {
+    public static  <T extends BaseEntity> QueryWrapper<T> creatSearchWrapper(List<SelectModel> selectModels, Map<String,FieldInfoBean> clzFiles) throws BaseRuntimeException {
         QueryWrapper<T> queryWrapper = new QueryWrapper<>();
         if(!CollectionUtils.isEmpty(selectModels)){
             for(SelectModel compareModel:selectModels){
@@ -65,7 +65,7 @@ public class SelectTools {
      */
     public static  <T extends BaseEntity> QueryWrapper<T> creatSearchWrapper(SelectModel selectModel, Class<T> clz) throws BaseException {
         QueryWrapper<T> queryWrapper = new QueryWrapper<>();
-        Map<String,Class<?>> clzFiles = ReflectionUtils.getDBEntityFieldsName(clz);
+        Map<String,FieldInfoBean> clzFiles = ReflectionUtils.getDBEntityFieldsName(clz);
         creatSearchWrapper(queryWrapper,clzFiles,selectModel);
         return queryWrapper;
     }
@@ -80,7 +80,7 @@ public class SelectTools {
      * @param <T>
      * @return
      */
-    private static  <T extends BaseEntity> QueryWrapper<T> creatSearchWrapper(QueryWrapper<T> queryWrapper, Map<String,Class<?>> clzFiles, SelectModel selectModel) throws BaseRuntimeException {
+    private static  <T extends BaseEntity> QueryWrapper<T> creatSearchWrapper(QueryWrapper<T> queryWrapper, Map<String,FieldInfoBean> clzFiles, SelectModel selectModel) throws BaseRuntimeException {
         if(queryWrapper == null){
             queryWrapper = new QueryWrapper<>();
         }
@@ -90,8 +90,14 @@ public class SelectTools {
         if(!clzFiles.containsKey(selectModel.getField())){
             throw new BaseResultRunTimeException(SysCode.PARAM_ERROR,selectModel.getField()+"是非法成员变量");
         }
-        String column = StrUtil.toUnderlineCase(selectModel.getField());
-        Class<?> aClass = clzFiles.get(selectModel.getField());
+
+        FieldInfoBean fieldInfoBean = clzFiles.get(selectModel.getField());
+        String column ;
+        if (fieldInfoBean.getTableField() != null && StrUtil.isNotEmpty(fieldInfoBean.getTableField().value())){
+            column = fieldInfoBean.getTableField().value();
+        }else {
+            column = StrUtil.toUnderlineCase(selectModel.getField());
+        }
         //解析比较信息
         switch (selectModel.getType()){
             case eq:
@@ -113,7 +119,7 @@ public class SelectTools {
                 queryWrapper.le(column,selectModel.getData());
                 break;
             case like:
-                if(aClass == String.class){
+                if(fieldInfoBean.getFieldClass() == String.class){
                     queryWrapper.like(column,selectModel.getData());
                     break;
                 }else {

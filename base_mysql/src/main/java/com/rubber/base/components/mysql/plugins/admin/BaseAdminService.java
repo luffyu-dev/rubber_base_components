@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rubber.base.components.mysql.plugins.admin.bean.BaseEntity;
 import com.rubber.base.components.mysql.plugins.admin.page.PageModel;
 import com.rubber.base.components.mysql.plugins.admin.page.PageTools;
+import com.rubber.base.components.mysql.plugins.admin.select.FieldInfoBean;
 import com.rubber.base.components.mysql.plugins.admin.select.SelectModel;
 import com.rubber.base.components.mysql.plugins.admin.select.SelectTools;
 import com.rubber.base.components.mysql.utils.ReflectionUtils;
@@ -58,7 +59,7 @@ public class BaseAdminService<M extends BaseMapper<T>,T extends BaseEntity> exte
     @Override
     public IPage<T> pageBySelect(PageModel pageModel, Class<T> clz, Set<String> requiredField) {
         verifyRequiredField(pageModel.getSelectModels(),requiredField);
-        Map<String,Class<?>> clzFiles = ReflectionUtils.getDBEntityFieldsName(clz);
+        Map<String, FieldInfoBean> clzFiles = ReflectionUtils.getDBEntityFieldsName(clz);
         IPage<T> page = PageTools.build(pageModel,clzFiles);
         QueryWrapper<T> queryWrapper = SelectTools.creatSearchWrapper(pageModel.getSelectModels(), clzFiles);
         return page(page,queryWrapper);
