@@ -1,21 +1,25 @@
 package com.rubber.base.components.util.result;
 
+import com.rubber.base.components.util.result.code.ICodeHandle;
+
 /**
  * @author luffyu
  * Created on 2019-07-12
  */
-public interface IResultHandle {
+public interface IResultHandle extends ICodeHandle {
 
     /**
      * 错误的code
      * @return 返回code值
      */
+    @Override
     String getCode();
 
     /**
      * 错误的msg
      * @return 返回msg信息
      */
+    @Override
     String getMsg();
 
     /**

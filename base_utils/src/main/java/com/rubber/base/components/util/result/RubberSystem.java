@@ -18,7 +18,7 @@ public class RubberSystem implements Serializable {
     /**
      * 系统时间
      */
-    private long requestTime;
+    private long requestTime = System.currentTimeMillis();
 
     /**
      * 请求时间

@@ -11,6 +11,11 @@ public class BaseUserSession {
 
 
     /**
+     * 页面的版本
+     */
+    private Integer v = 1;
+
+    /**
      * 当前用户的uid
      */
     private Integer uid;
