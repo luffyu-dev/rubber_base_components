@@ -25,6 +25,7 @@ public class RubberDbConstant {
     public static final String  SLAVE_KEY = "slave";
 
 
+    public static final String  SHARDING_VALUE = "shardingValue";
 
 
     /**

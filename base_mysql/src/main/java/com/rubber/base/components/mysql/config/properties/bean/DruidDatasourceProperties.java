@@ -1,16 +1,12 @@
-package com.rubber.base.components.mysql.config.single.properties;
+package com.rubber.base.components.mysql.config.properties.bean;
 
 import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * @author luffyu
- * Created on 2022/5/23
+ * Created on 2022/10/15
  */
 @Data
-@Configuration
-@ConfigurationProperties(prefix="spring.datasource.druid")
 public class DruidDatasourceProperties {
 
     private String driverClassName;

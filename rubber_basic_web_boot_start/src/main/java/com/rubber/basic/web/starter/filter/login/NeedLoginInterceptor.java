@@ -65,7 +65,12 @@ public class NeedLoginInterceptor implements HandlerInterceptor {
                     if(request instanceof CustomHttpServletRequestWrapper){
                         CustomHttpServletRequestWrapper requestWrapper = (CustomHttpServletRequestWrapper)request;
                         String body = requestWrapper.getBody();
-                        JSONObject param = JSONObject.parseObject(body);
+                        JSONObject param ;
+                        if (StrUtil.isNotEmpty(body) && body.startsWith("{") && body.endsWith("}")){
+                            param = JSONObject.parseObject(body);
+                        }else {
+                            param = new JSONObject();
+                        }
                         param.putAll(JSONObject.parseObject(JSON.toJSONString(baseUserSession)));
                         requestWrapper.setBody(JSONObject.toJSONString(param));
                         return true;
