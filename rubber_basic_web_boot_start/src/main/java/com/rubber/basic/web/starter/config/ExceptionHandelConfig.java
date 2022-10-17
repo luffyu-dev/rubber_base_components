@@ -29,7 +29,8 @@ public class ExceptionHandelConfig {
     @ExceptionHandler(value = {Exception.class, RuntimeException.class})
     @ResponseBody
     public ResultMsg handel(Exception e) throws Exception {
-        ExceptionUtils.printErrorMsg(e);
+        log.error(ExceptionUtils.printErrorMsg(e));
+        e.printStackTrace();
         if(e instanceof IResultException){
             IResultException re = (IResultException)e;
             IResultHandle resultHandle = re.getResult();
