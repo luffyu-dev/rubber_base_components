@@ -11,4 +11,9 @@ import java.lang.annotation.*;
 @Inherited
 @Documented
 public @interface NeedLogin {
+
+    /**
+     * 是否碧玺
+     */
+    boolean request() default true;
 }

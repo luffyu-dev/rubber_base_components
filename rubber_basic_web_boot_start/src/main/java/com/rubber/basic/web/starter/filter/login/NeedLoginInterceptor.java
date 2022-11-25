@@ -38,9 +38,12 @@ public class NeedLoginInterceptor implements HandlerInterceptor {
             return true;
         }
         // 从request的请求中解析出用户的登录态
-        BaseUserSession baseUserSession = checkAndCreateBaseUserSession(request);
+        BaseUserSession baseUserSession = checkAndCreateBaseUserSession(request,needLogin);
+        if (needLogin.request() && baseUserSession == null){
+            throw new BaseResultRunTimeException(SysCode.LOGIN_EXPIRED);
+        }
         // 把用户信息写到body中
-        if(!setUserSessionToBody(request, handlerMethod,baseUserSession)){
+        if(needLogin.request() && !setUserSessionToBody(request, handlerMethod,baseUserSession)){
             throw new BaseResultRunTimeException(SysCode.LOGIN_EXPIRED);
         }
         return true;
@@ -86,10 +89,10 @@ public class NeedLoginInterceptor implements HandlerInterceptor {
 
 
 
-    private BaseUserSession checkAndCreateBaseUserSession(HttpServletRequest request){
+    private BaseUserSession checkAndCreateBaseUserSession(HttpServletRequest request,NeedLogin needLogin){
         Cookie[] cookieArray = request.getCookies();
         if (ArrayUtil.isEmpty(cookieArray)){
-            throw new BaseResultRunTimeException(SysCode.LOGIN_EXPIRED);
+            return null;
         }
         String cookieValue = "";
         for (Cookie cookie:cookieArray){
@@ -99,10 +102,15 @@ public class NeedLoginInterceptor implements HandlerInterceptor {
             }
         }
         if (StrUtil.isEmpty(cookieValue)){
-            throw new BaseResultRunTimeException(SysCode.LOGIN_EXPIRED);
+            return null;
         }
-        // value的解析
-        return JwtSessionUtil.checkSession(cookieValue);
+        try{
+            // value的解析
+            return JwtSessionUtil.checkSession(cookieValue);
+        }catch (Exception e){
+            log.error("解析登录态失败，value={}",cookieValue);
+            return null;
+        }
     }
 
 
