@@ -4,6 +4,7 @@ package com.rubber.base.components.util.result;
 
 import com.rubber.base.components.util.result.code.ICodeHandle;
 import com.rubber.base.components.util.result.code.SysCode;
+import com.rubber.base.components.util.session.BaseUserSession;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -93,7 +94,9 @@ public class ResultMsg implements IResultHandle, Serializable {
     }
 
     public static ResultMsg create(String code, String msg, Object data){
-        return new ResultMsg(code,msg,data);
+        ResultMsg result =  new ResultMsg(code,msg,data);
+        result.setSysData(new RubberSystem());
+        return result;
     }
 
 
@@ -116,7 +119,7 @@ public class ResultMsg implements IResultHandle, Serializable {
 
     @Override
     public Object getSysData() {
-        return null;
+        return this.sysData;
     }
 
 

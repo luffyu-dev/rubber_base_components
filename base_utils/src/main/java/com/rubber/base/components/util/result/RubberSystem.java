@@ -15,15 +15,11 @@ public class RubberSystem implements Serializable {
      */
     private String traceId;
 
+
     /**
      * 系统时间
      */
-    private long requestTime = System.currentTimeMillis();
-
-    /**
-     * 请求时间
-     */
-    private long responseTime;
+    private long resTime = System.currentTimeMillis();
 
 
     /**

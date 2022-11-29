@@ -2,7 +2,9 @@ package com.rubber.base.components.mysql.utils;
 
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.rubber.base.components.mysql.plugins.admin.select.FieldInfoBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -131,4 +133,47 @@ public class ReflectionUtils {
         }
         return map;
     }
+
+
+    /**
+     * 制造resultMap
+     */
+    public static String createMybatisResultMap(Class<?> clx){
+        StringBuilder sb = new StringBuilder("<resultMap id=\"baseMap\" type=\"");
+        sb.append(clx.getName()).append("\">");
+
+        Field[] declaredFields = clx.getDeclaredFields();
+        for (Field field:declaredFields){
+            String f = field.getName();
+
+            String c = "";
+            TableId tableId= field.getAnnotation(TableId.class);
+            if (tableId != null){
+                c = tableId.value();
+            }else {
+                TableField tableField= field.getAnnotation(TableField.class);
+                if (tableField != null){
+                    c = tableField.value();
+                }
+            }
+            if (StrUtil.isEmpty(c)){
+                continue;
+            }
+
+            String type = "VARCHAR";
+            if (field.getType().getName().endsWith("Integer")){
+                type = "INTEGER";
+            }
+
+            sb.append("\n\t")
+                    .append("<result column=\"").append(c)
+                    .append("\" property=\"").append(f)
+                    .append("\" jdbcType=\"").append(type).append("\"")
+                    .append("/>");
+        }
+
+        sb.append("\n</resultMap>");
+        return sb.toString();
+    }
+
 }

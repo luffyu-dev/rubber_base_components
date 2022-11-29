@@ -18,6 +18,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 
 /**
  * @author luffyu
@@ -43,7 +44,7 @@ public class NeedLoginInterceptor implements HandlerInterceptor {
             throw new BaseResultRunTimeException(SysCode.LOGIN_EXPIRED);
         }
         // 把用户信息写到body中
-        if(needLogin.request() && !setUserSessionToBody(request, handlerMethod,baseUserSession)){
+        if(!setUserSessionToBody(request, handlerMethod,baseUserSession)){
             throw new BaseResultRunTimeException(SysCode.LOGIN_EXPIRED);
         }
         return true;
@@ -74,7 +75,15 @@ public class NeedLoginInterceptor implements HandlerInterceptor {
                         }else {
                             param = new JSONObject();
                         }
-                        param.putAll(JSONObject.parseObject(JSON.toJSONString(baseUserSession)));
+                        if (baseUserSession != null){
+                            baseUserSession.setSysReqTime(new Date());
+                            param.putAll(JSONObject.parseObject(JSON.toJSONString(baseUserSession)));
+                        }else {
+                            param.remove("uid");
+                            param.remove("v");
+                            param.remove("name");
+                            param.put("sysReqTime",new Date());
+                        }
                         requestWrapper.setBody(JSONObject.toJSONString(param));
                         return true;
                     }
