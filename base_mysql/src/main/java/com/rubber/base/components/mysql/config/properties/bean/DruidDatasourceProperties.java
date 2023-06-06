@@ -73,4 +73,10 @@ public class DruidDatasourceProperties {
      * #建立新连接时将发送到JDBC驱动程序的连接属性。字符串的格式必须为[propertyName = property;] *注 - “用户”和“密码”属性将被明确传递，因此不需要在此处包含
      */
     private String connectionProperties = "druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000";
+
+
+    /**
+     * 是否支持表情
+     */
+    private boolean openUtf8mb4 = false;
 }

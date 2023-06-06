@@ -115,6 +115,12 @@ public class RubberMySqlConfiguration {
         } catch (SQLException e) {
         }
         datasource.setConnectionProperties(mysqlProperties.getConnectionProperties());
+
+        if (mysqlProperties.isOpenUtf8mb4()){
+            List<Object> list = new ArrayList<>();
+            list.add("set names utf8mb4");
+            datasource.setConnectionInitSqls(list);
+        }
         return  datasource;
     }
 
