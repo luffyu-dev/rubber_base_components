@@ -11,6 +11,11 @@ import lombok.Getter;
 public class TableShardingConfig {
 
     /**
+     * 逻辑库
+     */
+    private String logicDb;
+
+    /**
      * 逻辑表
      */
     private String logicTable;
@@ -48,6 +53,11 @@ public class TableShardingConfig {
 
     public TableShardingConfig logicTable(String logicTable){
         this.logicTable = logicTable;
+        return this;
+    }
+
+    public TableShardingConfig logicDb(String logicDb){
+        this.logicDb = logicDb;
         return this;
     }
 

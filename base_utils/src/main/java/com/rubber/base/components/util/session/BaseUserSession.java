@@ -32,4 +32,10 @@ public class BaseUserSession {
      */
     private Date sysReqTime;
 
+
+    /**
+     * app的版本信息
+     */
+    private String appVersion;
+
 }

@@ -121,7 +121,7 @@ public class RubberShardingMybatisInterceptor implements Interceptor {
         }
         if (object instanceof ShardingLambdaQueryWrapper){
             ShardingLambdaQueryWrapper slqw = (ShardingLambdaQueryWrapper)object;
-            map.put(RubberDbConstant.SHARDING_VALUE,slqw);
+            map.put(RubberDbConstant.SHARDING_VALUE,slqw.getShardingValue());
         }
         return map;
     }

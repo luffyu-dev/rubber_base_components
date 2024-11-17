@@ -41,10 +41,11 @@ public class ShardingTableVisitor extends MySqlASTVisitorAdapter {
         TableShardingConfig shardingConfig = tableShardingConfig.get(tableName);
         if(shardingConfig != null){
             ShardingLogicTable shardingLogicTable = new ShardingLogicTable();
-            shardingLogicTable.setLogicTable(tableName);
-            shardingLogicTable.setParams(this.params);
+            shardingLogicTable.setLogicDb(shardingConfig.getLogicDb());
+            shardingLogicTable.setLogicTable(shardingConfig.getLogicTable());
             shardingLogicTable.setRealDb(shardingConfig.getRealDb());
             shardingLogicTable.setRealTable(shardingConfig.getRealTable());
+            shardingLogicTable.setParams(this.params);
 
             RubberShardingStrategy shardingStrategy = shardingConfig.getStrategy();
             if (shardingStrategy != null){
