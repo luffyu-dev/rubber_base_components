@@ -4,6 +4,7 @@ package com.rubber.basic.web.starter.filter.login;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -23,6 +24,20 @@ public class CustomSessionFilter implements Filter {
         }catch (Exception e){
 
         }
-        chain.doFilter((Objects.isNull(customHttpServletRequestWrapper) ? request : customHttpServletRequestWrapper), response);
+
+
+        CustomResponseWrapper customHttpServletResponseWrapper = null;
+        try {
+            HttpServletResponse res = (HttpServletResponse)response;
+            customHttpServletResponseWrapper = new CustomResponseWrapper(res);
+        }catch (Exception e){
+
+        }
+
+
+        chain.doFilter(
+                (Objects.isNull(customHttpServletRequestWrapper) ? request : customHttpServletRequestWrapper),
+                (Objects.isNull(customHttpServletResponseWrapper) ? response : customHttpServletResponseWrapper)
+        );
     }
 }

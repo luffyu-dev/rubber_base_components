@@ -38,4 +38,10 @@ public class BaseUserSession {
      */
     private String appVersion;
 
+
+    /**
+     * 用户角色
+     */
+    private String userRule;
+
 }

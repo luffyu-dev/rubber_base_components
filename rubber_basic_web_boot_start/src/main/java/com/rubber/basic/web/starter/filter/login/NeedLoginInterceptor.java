@@ -14,10 +14,13 @@ import org.springframework.core.MethodParameter;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Date;
 
 /**
@@ -27,9 +30,19 @@ import java.util.Date;
 @Slf4j
 public class NeedLoginInterceptor implements HandlerInterceptor {
 
+
+    /**
+     * 入参处理
+     * @param request
+     * @param response
+     * @param handler
+     * @return
+     * @throws Exception
+     */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
+        // 替换 HttpServletResponse
         if (!(handler instanceof HandlerMethod)) {
             return true;
         }
@@ -49,6 +62,59 @@ public class NeedLoginInterceptor implements HandlerInterceptor {
         }
         return true;
     }
+
+
+    /**
+     * 返回值处理
+     * @param request
+     * @param response
+     * @param handler
+     * @param modelAndView
+     * @throws Exception
+     */
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,ModelAndView modelAndView) throws IOException {
+
+        BaseUserSession baseUserSession = null;
+        if (handler instanceof HandlerMethod) {
+            HandlerMethod handlerMethod = (HandlerMethod) handler;
+            NeedLogin needLogin = handlerMethod.getMethodAnnotation(NeedLogin.class);
+
+            if (needLogin != null && request instanceof CustomHttpServletRequestWrapper) {
+                CustomHttpServletRequestWrapper requestWrapper = (CustomHttpServletRequestWrapper) request;
+                String body = requestWrapper.getBody();
+                if (StrUtil.isNotEmpty(body) && body.startsWith("{")) {
+                    baseUserSession = JSON.parseObject(body,BaseUserSession.class);
+                }
+            }
+        }
+
+
+
+        if (response instanceof CustomResponseWrapper){
+            CustomResponseWrapper responseWrapper = (CustomResponseWrapper) response;
+            // 获取原始响应内容
+            String originalContent = responseWrapper.getCapturedResponse();
+            if (StrUtil.isNotEmpty(originalContent) && originalContent.startsWith("{")){
+                JSONObject resContent = JSON.parseObject(originalContent);
+                JSONObject sysData = resContent.getJSONObject("sysData");
+                if (sysData == null){
+                    sysData = new JSONObject();
+                }
+                if (baseUserSession != null){
+                    sysData.putAll(JSONObject.parseObject(JSON.toJSONString(baseUserSession)));
+                }
+                sysData.put("sysResTime",new Date());
+                resContent.put("sysData",sysData);
+                originalContent = JSON.toJSONString(resContent);
+            }
+            responseWrapper.writeModifiedResponse(originalContent);
+        }
+
+    }
+
+
+
 
     /**
      * 设置用户信息到body中
@@ -82,6 +148,8 @@ public class NeedLoginInterceptor implements HandlerInterceptor {
                             param.remove("uid");
                             param.remove("v");
                             param.remove("name");
+                            param.remove("appVersion");
+                            param.remove("userRule");
                             param.put("sysReqTime",new Date());
                         }
                         requestWrapper.setBody(JSONObject.toJSONString(param));
