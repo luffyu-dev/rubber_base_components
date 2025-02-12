@@ -19,13 +19,31 @@ public class RubberSystem implements Serializable {
     /**
      * 系统时间
      */
-    private long resTime = System.currentTimeMillis();
+    private long sysTime = System.currentTimeMillis();
 
 
     /**
      * 当前请求的ip
      */
     private String ip;
+
+
+
+    /**
+     * 当前用户的uid
+     */
+    private Integer uid;
+
+    /**
+     * 当前用户的名称
+     */
+    private String userName;
+
+
+    /**
+     * 用户角色
+     */
+    private String userRole;
 
 
 }

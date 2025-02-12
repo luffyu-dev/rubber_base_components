@@ -33,10 +33,9 @@ public class ResultMsg implements IResultHandle, Serializable {
 
 
     /**
-     * 系统中的数据信息
-     * 例如网关中的数据 和 当前的系统时间等
+     * 系统参数
      */
-    private Object sysData;
+    private RubberSystem sysData;
 
 
     public ResultMsg() {

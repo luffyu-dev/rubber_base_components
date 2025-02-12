@@ -1,6 +1,8 @@
 package com.rubber.base.components.util.session;
 
+import com.rubber.base.components.util.result.bean.RubberBaseReq;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
@@ -8,14 +10,11 @@ import java.util.Date;
  * @author luffyu
  * Created on 2022/8/16
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class BaseUserSession {
+public class BaseUserSession extends RubberBaseReq {
 
 
-    /**
-     * 页面的版本
-     */
-    private Integer v = 1;
 
     /**
      * 当前用户的uid
@@ -27,21 +26,11 @@ public class BaseUserSession {
      */
     private String name;
 
-    /**
-     * 系统请求时间
-     */
-    private Date sysReqTime;
-
-
-    /**
-     * app的版本信息
-     */
-    private String appVersion;
-
 
     /**
      * 用户角色
      */
-    private String userRule;
+    private String role;
+
 
 }

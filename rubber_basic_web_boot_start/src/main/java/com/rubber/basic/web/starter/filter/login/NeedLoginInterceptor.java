@@ -1,10 +1,14 @@
 package com.rubber.basic.web.starter.filter.login;
 
+import cn.hutool.core.net.Ipv4Util;
 import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.rubber.base.components.util.annotation.NeedLogin;
+import com.rubber.base.components.util.result.RubberSystem;
 import com.rubber.base.components.util.result.code.SysCode;
 import com.rubber.base.components.util.result.exception.BaseResultRunTimeException;
 import com.rubber.base.components.util.session.BaseUserSession;
@@ -46,20 +50,31 @@ public class NeedLoginInterceptor implements HandlerInterceptor {
         if (!(handler instanceof HandlerMethod)) {
             return true;
         }
+        BaseUserSession baseReq  = new BaseUserSession();
+        baseReq.setTraceId("T"+ IdUtil.fastSimpleUUID());
+        baseReq.setUid(null);
+        baseReq.setName(null);
+        baseReq.setRole(null);
+
         HandlerMethod handlerMethod = (HandlerMethod)handler;
         NeedLogin needLogin = handlerMethod.getMethodAnnotation(NeedLogin.class);
-        if (needLogin == null){
-            return true;
-        }
-        // 从request的请求中解析出用户的登录态
-        BaseUserSession baseUserSession = checkAndCreateBaseUserSession(request,needLogin);
-        if (needLogin.request() && baseUserSession == null){
-            throw new BaseResultRunTimeException(SysCode.LOGIN_EXPIRED);
+        if (needLogin != null){
+            // 从request的请求中解析出用户的登录态
+            BaseUserSession loginSession = checkAndCreateBaseUserSession(request);
+            if (needLogin.request() && loginSession == null){
+                throw new BaseResultRunTimeException(SysCode.LOGIN_EXPIRED);
+            }
+            if (loginSession != null){
+                baseReq.setUid(loginSession.getUid());
+                baseReq.setName(loginSession.getName());
+                baseReq.setRole(loginSession.getRole());
+            }
         }
         // 把用户信息写到body中
-        if(!setUserSessionToBody(request, handlerMethod,baseUserSession)){
-            throw new BaseResultRunTimeException(SysCode.LOGIN_EXPIRED);
-        }
+//        if(!setUserSessionToBody(request, handlerMethod,baseReq)){
+//            throw new BaseResultRunTimeException(SysCode.LOGIN_EXPIRED);
+//        }
+        trySetUserSessionToBody(request, handlerMethod,baseReq);
         return true;
     }
 
@@ -97,15 +112,20 @@ public class NeedLoginInterceptor implements HandlerInterceptor {
             String originalContent = responseWrapper.getCapturedResponse();
             if (StrUtil.isNotEmpty(originalContent) && originalContent.startsWith("{")){
                 JSONObject resContent = JSON.parseObject(originalContent);
-                JSONObject sysData = resContent.getJSONObject("sysData");
-                if (sysData == null){
-                    sysData = new JSONObject();
-                }
+
+
+                RubberSystem rubberSystem = new RubberSystem();
+                rubberSystem.setIp("");
+                rubberSystem.setTraceId("T"+ IdUtil.fastSimpleUUID());
+
                 if (baseUserSession != null){
-                    sysData.putAll(JSONObject.parseObject(JSON.toJSONString(baseUserSession)));
+                    rubberSystem.setTraceId(baseUserSession.getTraceId());
+                    rubberSystem.setUid(baseUserSession.getUid());
+                    rubberSystem.setUserRole(baseUserSession.getRole());
+                    rubberSystem.setUserName(baseUserSession.getName());
                 }
-                sysData.put("sysResTime",new Date());
-                resContent.put("sysData",sysData);
+
+                resContent.put("sysData",rubberSystem);
                 originalContent = JSON.toJSONString(resContent);
             }
             responseWrapper.writeModifiedResponse(originalContent);
@@ -123,7 +143,7 @@ public class NeedLoginInterceptor implements HandlerInterceptor {
      * @param baseUserSession
      * @return
      */
-    private boolean setUserSessionToBody(HttpServletRequest request, HandlerMethod handlerMethod, BaseUserSession baseUserSession){
+    private boolean trySetUserSessionToBody(HttpServletRequest request, HandlerMethod handlerMethod, BaseUserSession baseUserSession){
         try{
             MethodParameter[] methodParameters = handlerMethod.getMethodParameters();
             if(ArrayUtil.isEmpty(methodParameters)) {
@@ -149,7 +169,7 @@ public class NeedLoginInterceptor implements HandlerInterceptor {
                             param.remove("v");
                             param.remove("name");
                             param.remove("appVersion");
-                            param.remove("userRule");
+                            param.remove("role");
                             param.put("sysReqTime",new Date());
                         }
                         requestWrapper.setBody(JSONObject.toJSONString(param));
@@ -166,7 +186,7 @@ public class NeedLoginInterceptor implements HandlerInterceptor {
 
 
 
-    private BaseUserSession checkAndCreateBaseUserSession(HttpServletRequest request,NeedLogin needLogin){
+    private BaseUserSession checkAndCreateBaseUserSession(HttpServletRequest request){
         Cookie[] cookieArray = request.getCookies();
         if (ArrayUtil.isEmpty(cookieArray)){
             return null;
