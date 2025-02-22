@@ -34,7 +34,8 @@ public enum SysCode implements ICodeHandle{
      * 3-**-**-** 表示用户的行为错误
      */
     PARAM_ERROR("3000000","参数错误"),
-    LOGIN_EXPIRED("3000100","请重新登录");
+    LOGIN_EXPIRED("3000100","请重新登录"),
+    UN_PERMISSION("3000200","暂无权限");
 
     ;
     public String code;

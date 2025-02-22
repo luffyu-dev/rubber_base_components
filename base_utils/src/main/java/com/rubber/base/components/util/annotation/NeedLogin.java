@@ -16,4 +16,10 @@ public @interface NeedLogin {
      * 是否碧玺
      */
     boolean request() default true;
+
+
+    /**
+     * 是否需要管理员
+     */
+    boolean needManager() default false;
 }

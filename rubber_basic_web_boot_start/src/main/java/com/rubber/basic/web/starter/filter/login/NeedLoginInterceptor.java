@@ -64,6 +64,14 @@ public class NeedLoginInterceptor implements HandlerInterceptor {
             if (needLogin.request() && loginSession == null){
                 throw new BaseResultRunTimeException(SysCode.LOGIN_EXPIRED);
             }
+            if (needLogin.needManager() ){
+                if (loginSession == null){
+                    throw new BaseResultRunTimeException(SysCode.LOGIN_EXPIRED);
+                }
+                if (!"manager".equals(loginSession.getRole())){
+                    throw new BaseResultRunTimeException(SysCode.UN_PERMISSION);
+                }
+            }
             if (loginSession != null){
                 baseReq.setUid(loginSession.getUid());
                 baseReq.setName(loginSession.getName());
