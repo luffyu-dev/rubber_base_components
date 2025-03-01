@@ -5,6 +5,7 @@ import org.springframework.web.util.ContentCachingResponseWrapper;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public class CustomResponseWrapper extends ContentCachingResponseWrapper {
     public CustomResponseWrapper(HttpServletResponse response) {
@@ -17,7 +18,7 @@ public class CustomResponseWrapper extends ContentCachingResponseWrapper {
     }
 
     public void writeModifiedResponse(String modifiedContent) throws IOException {
-        getResponse().getOutputStream().write(modifiedContent.getBytes(getCharacterEncoding()));
+        getResponse().getOutputStream().write(modifiedContent.getBytes(StandardCharsets.UTF_8));
         getResponse().flushBuffer();
     }
 }
