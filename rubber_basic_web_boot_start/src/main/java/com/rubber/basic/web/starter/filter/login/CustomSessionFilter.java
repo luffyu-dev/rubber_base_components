@@ -35,9 +35,26 @@ public class CustomSessionFilter implements Filter {
         }
 
 
-        chain.doFilter(
-                (Objects.isNull(customHttpServletRequestWrapper) ? request : customHttpServletRequestWrapper),
-                (Objects.isNull(customHttpServletResponseWrapper) ? response : customHttpServletResponseWrapper)
-        );
+        try {
+            chain.doFilter(
+                    (Objects.isNull(customHttpServletRequestWrapper) ? request : customHttpServletRequestWrapper),
+                    (Objects.isNull(customHttpServletResponseWrapper) ? response : customHttpServletResponseWrapper)
+            );
+        }finally {
+            copyBodyToResponse(customHttpServletResponseWrapper);
+        }
+    }
+
+    private void copyBodyToResponse(CustomResponseWrapper responseWrapper) throws IOException {
+        if (responseWrapper == null){
+            return;
+        }
+        if (responseWrapper.isCommitted()){
+            return;
+        }
+        byte[] body = responseWrapper.getContentAsByteArray();
+        if (body.length > 0) {
+            responseWrapper.copyBodyToResponse();
+        }
     }
 }
