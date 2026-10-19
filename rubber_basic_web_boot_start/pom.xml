@@ -40,7 +40,16 @@
             <artifactId>jjwt</artifactId>
         </dependency>
 
-<!--        <dependency>-->
+        <!-- jjwt 0.9.1（base_utils 传递依赖）依赖 javax.xml.bind.DatatypeConverter 做 Base64，
+            JDK 11+ 已移除 JAXB，需显式引入 jaxb-api，否则运行时抛 NoClassDefFoundError -->
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.1</version>
+        </dependency>
+
+
+        <!--        <dependency>-->
 <!--            <groupId>com.alibaba.cloud</groupId>-->
 <!--            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>-->
 <!--        </dependency>-->
