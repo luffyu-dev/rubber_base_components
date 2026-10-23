@@ -78,7 +78,8 @@ public class ProxyRestLocalTemplate extends RestTemplate {
             return (T)proxyResult;
         }
         URI expanded = getUriTemplateHandler().expand(url, uriVariables);
-        return doExecute(expanded, method, requestCallback, responseExtractor);
+        // Spring 7 起 doExecute 增加 uriTemplate 参数（用于日志/指标），传入原始 url 模板
+        return doExecute(expanded, url, method, requestCallback, responseExtractor);
     }
 
 

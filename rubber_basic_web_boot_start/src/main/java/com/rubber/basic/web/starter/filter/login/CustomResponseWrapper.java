@@ -2,9 +2,9 @@ package com.rubber.basic.web.starter.filter.login;
 
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponseWrapper;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 

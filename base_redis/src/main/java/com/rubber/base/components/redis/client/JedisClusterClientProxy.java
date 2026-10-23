@@ -4,7 +4,6 @@ import com.rubber.base.components.redis.RedisClientProxy;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.JedisCluster;
-import redis.clients.jedis.JedisClusterHostAndPortMap;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLParameters;
@@ -57,9 +56,8 @@ public class JedisClusterClientProxy extends JedisCluster implements RedisClient
         super(node, connectionTimeout, soTimeout, maxAttempts, password, clientName, poolConfig, ssl);
     }
 
-    public JedisClusterClientProxy(HostAndPort node, int connectionTimeout, int soTimeout, int maxAttempts, String password, String clientName, GenericObjectPoolConfig poolConfig, boolean ssl, SSLSocketFactory sslSocketFactory, SSLParameters sslParameters, HostnameVerifier hostnameVerifier, JedisClusterHostAndPortMap hostAndPortMap) {
-        super(node, connectionTimeout, soTimeout, maxAttempts, password, clientName, poolConfig, ssl, sslSocketFactory, sslParameters, hostnameVerifier, hostAndPortMap);
-    }
+    // 注：Jedis 7 已移除 JedisClusterHostAndPortMap 及携带 SSLSocketFactory/SSLParameters/HostnameVerifier 的集群构造器，
+    // SSL 现统一通过 JedisClientConfig 配置。如需自定义 SSL 与节点映射，请改用 JedisClientConfig / HostAndPortMapper 方式构造。
 
     public JedisClusterClientProxy(Set<HostAndPort> nodes) {
         super(nodes);
@@ -101,9 +99,8 @@ public class JedisClusterClientProxy extends JedisCluster implements RedisClient
         super(jedisClusterNode, connectionTimeout, soTimeout, maxAttempts, password, clientName, poolConfig, ssl);
     }
 
-    public JedisClusterClientProxy(Set<HostAndPort> jedisClusterNode, int connectionTimeout, int soTimeout, int maxAttempts, String password, String clientName, GenericObjectPoolConfig poolConfig, boolean ssl, SSLSocketFactory sslSocketFactory, SSLParameters sslParameters, HostnameVerifier hostnameVerifier, JedisClusterHostAndPortMap hostAndPortMap) {
-        super(jedisClusterNode, connectionTimeout, soTimeout, maxAttempts, password, clientName, poolConfig, ssl, sslSocketFactory, sslParameters, hostnameVerifier, hostAndPortMap);
-    }
+    // 注：携带 SSLSocketFactory/SSLParameters/HostnameVerifier/JedisClusterHostAndPortMap 的集群构造器在 Jedis 7 已移除，
+    // 改用 JedisClientConfig 配置 SSL、HostAndPortMapper 配置节点映射。
 
     /**
      * 单台实例的方法

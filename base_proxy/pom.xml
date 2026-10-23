@@ -5,7 +5,7 @@
     <parent>
         <artifactId>rubber_base_components</artifactId>
         <groupId>com.rubber</groupId>
-        <version>1.2.0-ALPHA</version>
+        <version>4.1.1-ALPHA</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -18,10 +18,14 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!--调用链路-->
+        <!--调用链路：Sleuth 废弃，改用 Micrometer Tracing + Brave -->
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-sleuth-zipkin</artifactId>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-tracing-bridge-brave</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.zipkin.reporter2</groupId>
+            <artifactId>zipkin-reporter-brave</artifactId>
         </dependency>
 
 

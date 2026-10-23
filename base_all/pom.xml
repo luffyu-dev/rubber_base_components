@@ -5,7 +5,7 @@
     <parent>
         <artifactId>rubber_base_components</artifactId>
         <groupId>com.rubber</groupId>
-        <version>1.2.0-ALPHA</version>
+        <version>4.1.1-ALPHA</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -16,7 +16,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
-            <version>${springboot.version}</version>
         </dependency>
 
         <dependency>

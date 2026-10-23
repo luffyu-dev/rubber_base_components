@@ -3,12 +3,15 @@ package com.rubber.base.components.mysql.plugins.admin.page;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rubber.base.components.mysql.plugins.admin.bean.BaseEntity;
 import com.rubber.base.components.mysql.plugins.admin.select.FieldInfoBean;
 import com.rubber.base.components.util.result.code.SysCode;
 import com.rubber.base.components.util.result.exception.BaseResultRunTimeException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,15 +32,22 @@ public class PageTools {
         page.setCurrent(pagerModel.getPage());
         page.setSize(pagerModel.getSize());
         if(pagerModel.getOrder() != null && ArrayUtil.isNotEmpty(pagerModel.getSort())){
+            // mybatis-plus 3.5.x 移除了 Page.setAsc/setDesc，改用 addOrder(OrderItem)
+            List<OrderItem> orderItems = new ArrayList<>();
             switch (pagerModel.getOrder()){
                 case asc:
-                    page.setAsc(pagerModel.getSort());
+                    for (String column : pagerModel.getSort()) {
+                        orderItems.add(OrderItem.asc(column));
+                    }
                     break;
                 case desc:
-                    page.setDesc(pagerModel.getSort());
+                    for (String column : pagerModel.getSort()) {
+                        orderItems.add(OrderItem.desc(column));
+                    }
                     break;
                  default:
             }
+            page.addOrder(orderItems);
         }
         return page;
     }

@@ -1,1 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.rubber.basic.web.starter.RubberBasicWebAuthStarter

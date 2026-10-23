@@ -11,14 +11,14 @@ import com.rubber.base.components.redis.RedisClientProxy;
 public class LocalCacheClientProxy implements RedisClientProxy {
 
 
-    private Cache<String,String> cache;
+    private Cache<String, String> cache;
 
-    public LocalCacheClientProxy(){
+    public LocalCacheClientProxy() {
         this.cache = new LFUCache<>(1000);
     }
 
 
-    public LocalCacheClientProxy(Cache<String,String> cache){
+    public LocalCacheClientProxy(Cache<String, String> cache) {
         this.cache = cache;
     }
 
@@ -33,7 +33,7 @@ public class LocalCacheClientProxy implements RedisClientProxy {
     @Override
     @Deprecated
     public void set(String key, String value, int seconds) {
-        cache.put(key,value);
+        cache.put(key, value);
     }
 
     @Override
@@ -42,21 +42,21 @@ public class LocalCacheClientProxy implements RedisClientProxy {
     }
 
     @Override
-    public Boolean exists(String key) {
+    public boolean exists(String key) {
         return cache.containsKey(key);
     }
 
     @Override
-    public Long del(String... keys) {
-        Long l1 = 0L;
-        for (String s:keys){
-            l1 += del(s);
+    public long del(String... keys) {
+        long count = 0L;
+        for (String s : keys) {
+            count += del(s);
         }
-        return l1;
+        return count;
     }
 
     @Override
-    public Long del(String key) {
+    public long del(String key) {
         if (cache.containsKey(key)) {
             cache.remove(key);
             return 1L;
@@ -65,32 +65,32 @@ public class LocalCacheClientProxy implements RedisClientProxy {
     }
 
     @Override
-    public Long setnx(String key, String value) {
+    public long setnx(String key, String value) {
+        return 0L;
+    }
+
+    @Override
+    public String setex(String key, long seconds, String value) {
         return null;
     }
 
     @Override
-    public String setex(String key, int seconds, String value) {
-        return null;
+    public long decrBy(String key, long decrement) {
+        return 0L;
     }
 
     @Override
-    public Long decrBy(String key, long decrement) {
-        return null;
+    public long decr(String key) {
+        return 0L;
     }
 
     @Override
-    public Long decr(String key) {
-        return null;
+    public long incrBy(String key, long increment) {
+        return 0L;
     }
 
     @Override
-    public Long incrBy(String key, long increment) {
-        return null;
-    }
-
-    @Override
-    public Long incr(String key) {
-        return null;
+    public long incr(String key) {
+        return 0L;
     }
 }

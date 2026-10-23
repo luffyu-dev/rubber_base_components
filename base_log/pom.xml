@@ -5,7 +5,7 @@
     <parent>
         <artifactId>rubber_base_components</artifactId>
         <groupId>com.rubber</groupId>
-        <version>1.2.0-ALPHA</version>
+        <version>4.1.1-ALPHA</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -13,19 +13,37 @@
 
 
     <dependencies>
+        <!-- 调用链路：Sleuth 在 Spring Cloud 2022+ 已废弃，改用 Micrometer Tracing + Brave -->
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-sleuth-zipkin</artifactId>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-tracing-bridge-brave</artifactId>
         </dependency>
-
         <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
+            <groupId>io.zipkin.reporter2</groupId>
+            <artifactId>zipkin-reporter-brave</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.rubber</groupId>
             <artifactId>base_utils</artifactId>
+        </dependency>
+
+        <!-- 自动装配支持（@AutoConfiguration / FilterRegistrationBean） -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+
+        <!-- Servlet API：仅编译期用，运行期由依赖方 web starter 提供 -->
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
     </dependencies>

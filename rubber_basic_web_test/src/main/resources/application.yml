@@ -1,0 +1,8 @@
+server:
+  port: 38006
+  servlet:
+    context-path: /at-api
+
+spring:
+  application:
+    name: rubber-test

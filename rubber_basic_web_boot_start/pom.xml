@@ -5,7 +5,7 @@
     <parent>
         <artifactId>rubber_base_components</artifactId>
         <groupId>com.rubber</groupId>
-        <version>1.2.0-ALPHA</version>
+        <version>4.1.1-ALPHA</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -32,20 +32,6 @@
         <dependency>
             <groupId>com.rubber</groupId>
             <artifactId>base_utils</artifactId>
-        </dependency>
-
-
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-        </dependency>
-
-        <!-- jjwt 0.9.1（base_utils 传递依赖）依赖 javax.xml.bind.DatatypeConverter 做 Base64，
-            JDK 11+ 已移除 JAXB，需显式引入 jaxb-api，否则运行时抛 NoClassDefFoundError -->
-        <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <version>2.3.1</version>
         </dependency>
 
 

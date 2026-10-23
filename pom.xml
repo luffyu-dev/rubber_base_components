@@ -7,13 +7,14 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.2.RELEASE</version>
+        <version>4.1.1</version>
     </parent>
 
     <groupId>com.rubber</groupId>
+
     <artifactId>rubber_base_components</artifactId>
     <packaging>pom</packaging>
-    <version>1.2.0-ALPHA</version>
+    <version>4.1.1-ALPHA</version>
 
     <modules>
         <module>base_mysql</module>
@@ -30,22 +31,18 @@
 
 
     <properties>
-        <rubber.version>1.2.0-ALPHA</rubber.version>
-        <java.version>1.8</java.version>
-        <log4j.version>1.2.17</log4j.version>
-        <lombok.version>1.18.16</lombok.version>
-        <mysql-connector.version>8.0.21</mysql-connector.version>
-        <druid.version>1.2.1</druid.version>
-        <springboot.version>2.3.2.RELEASE</springboot.version>
-        <springcloudalibaba.version>2.2.7.RELEASE</springcloudalibaba.version>
-        <mybatis-plus.version>3.4.0</mybatis-plus.version>
-        <shardingsphere.sharding.jdbc>3.1.0</shardingsphere.sharding.jdbc>
-        <sleuth-zipkin.version>2.2.6.RELEASE</sleuth-zipkin.version>
-        <hutool.version>5.8.5</hutool.version>
-        <fastjson.version>2.0.11</fastjson.version>
-        <log4j.version>1.2.17</log4j.version>
-        <apache.dubbo.version>3.0.3</apache.dubbo.version>
-        <jjwt.version>0.9.1</jjwt.version>
+        <rubber.version>4.1.1-ALPHA</rubber.version>
+        <java.version>21</java.version>
+        <lombok.version>1.18.34</lombok.version>
+        <mysql-connector.version>8.4.0</mysql-connector.version>
+        <druid.version>1.2.28</druid.version>
+        <springcloud.version>2023.0.5</springcloud.version>
+        <springcloudalibaba.version>2023.0.3.2</springcloudalibaba.version>
+        <mybatis-plus.version>3.5.7</mybatis-plus.version>
+        <hutool.version>5.8.33</hutool.version>
+        <fastjson.version>1.2.83</fastjson.version>
+        <apache.dubbo.version>3.3.0</apache.dubbo.version>
+        <jjwt.version>0.12.6</jjwt.version>
     </properties>
 
 
@@ -53,6 +50,15 @@
         <dependencies>
 
             <!-- ****************************************第三方jar包**************************************** -->
+
+            <!--spring-cloud 版本（与 Spring Boot 4.1 对齐）-->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${springcloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
 
             <!--spring-cloud-alibaba的版本-->
             <dependency>
@@ -63,17 +69,10 @@
                 <scope>import</scope>
             </dependency>
 
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter</artifactId>
-                <version>${springboot.version}</version>
-            </dependency>
-
-            <!-- 数据库的操作对象-->
-            <!-- https://mvnrepository.com/artifact/com.baomidou/mybatis-plus-boot-starter -->
+            <!-- 数据库的操作对象（mybatis-plus boot3 starter）-->
             <dependency>
                 <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
                 <version>${mybatis-plus.version}</version>
             </dependency>
 
@@ -83,11 +82,17 @@
                 <version>${mybatis-plus.version}</version>
             </dependency>
 
-            <!--数据库连接-->
+            <!--数据库连接（mysql-connector-java 改名为 mysql-connector-j）-->
             <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
+                <groupId>com.mysql</groupId>
+                <artifactId>mysql-connector-j</artifactId>
                 <version>${mysql-connector.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-4-starter</artifactId>
+                <version>${druid.version}</version>
             </dependency>
 
             <dependency>
@@ -102,27 +107,6 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
-            </dependency>
-
-
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-sleuth-zipkin</artifactId>
-                <version>${sleuth-zipkin.version}</version>
-            </dependency>
-
-            <!--添加数据库分库分表插件-->
-            <dependency>
-                <groupId>io.shardingsphere</groupId>
-                <artifactId>sharding-jdbc-core</artifactId>
-                <version>${shardingsphere.sharding.jdbc}</version>
-            </dependency>
-
-
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-context</artifactId>
-                <version>${springcloudalibaba.version}</version>
             </dependency>
 
 
@@ -142,13 +126,6 @@
             </dependency>
 
 
-            <dependency>
-                <groupId>log4j</groupId>
-                <artifactId>log4j</artifactId>
-                <version>${log4j.version}</version>
-            </dependency>
-
-
             <!-- https://mvnrepository.com/artifact/org.apache.dubbo/dubbo-spring-boot-starter -->
             <dependency>
                 <groupId>org.apache.dubbo</groupId>
@@ -165,7 +142,17 @@
 
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
-                <artifactId>jjwt</artifactId>
+                <artifactId>jjwt-api</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-impl</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-jackson</artifactId>
                 <version>${jjwt.version}</version>
             </dependency>
 
@@ -316,22 +303,15 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.10.0</version>
-                <configuration>
+                    <release>${java.version}</release>
                     <encoding>utf-8</encoding>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
-                            <version>1.18.34</version>
+                            <version>${lombok.version}</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>

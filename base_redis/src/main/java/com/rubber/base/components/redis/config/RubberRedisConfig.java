@@ -14,8 +14,8 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import redis.clients.jedis.DefaultJedisClientConfig;
 import redis.clients.jedis.HostAndPort;
-import redis.clients.jedis.JedisShardInfo;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -71,9 +71,12 @@ public class RubberRedisConfig {
             nodes.add(new HostAndPort(host[0], Integer.parseInt(host[1])));
         });
         if (RedisClusterType.SINGLE.equals(configProperties.getRedisClusterType())) {
-            JedisShardInfo shardInfo = new JedisShardInfo(nodes.iterator().next());
-            shardInfo.setPassword(configProperties.getPassword());
-            return new JedisClientProxy(shardInfo);
+            // Jedis 7 移除了 JedisShardInfo，改用 JedisClientConfig 配置 password 等连接参数
+            HostAndPort node = nodes.iterator().next();
+            DefaultJedisClientConfig config = DefaultJedisClientConfig.builder()
+                    .password(configProperties.getPassword())
+                    .build();
+            return new JedisClientProxy(node, config);
         }else if (RedisClusterType.CLUSTER.equals(configProperties.getRedisClusterType())){
             return new JedisClusterClientProxy(
                     nodes,

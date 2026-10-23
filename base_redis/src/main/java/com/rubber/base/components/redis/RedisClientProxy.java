@@ -13,26 +13,30 @@ public interface RedisClientProxy {
     /**
      * 单台实例的方法
      */
-    void set(String key, String value,int seconds);
+    void set(String key, String value, int seconds);
 
     String get(String key);
 
-    Boolean exists(String key);
+    /**
+     * 注：Jedis 5+ 起 exists/incr/del/setnx 等返回基本类型 boolean/long，
+     * 接口同步调整为基本类型，避免与 Jedis 子类方法签名冲突。
+     */
+    boolean exists(String key);
 
-    Long del(String... keys);
+    long del(String... keys);
 
-    Long del(String key);
+    long del(String key);
 
-    Long setnx(String key, String value);
+    long setnx(String key, String value);
 
-    String setex(String key, int seconds, String value);
+    String setex(String key, long seconds, String value);
 
-    Long decrBy(String key, long decrement);
+    long decrBy(String key, long decrement);
 
-    Long decr(String key);
+    long decr(String key);
 
-    Long incrBy(String key, long increment);
+    long incrBy(String key, long increment);
 
-    Long incr(String key);
+    long incr(String key);
 
 }

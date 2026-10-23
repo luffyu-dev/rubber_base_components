@@ -1,2 +1,12 @@
+# base_log 默认日志配置
+# 依赖 base_log 的工程无需任何配置即生效：Spring Boot 默认会加载依赖 jar 中的
+# classpath:config/application.yml，从而指定 logging.config 指向 base_log 的 logback.xml。
+# 若依赖方需要自定义，只需在自己的 application.yml 中设置 logging.config 或同名属性覆盖即可。
 logging:
   config: classpath:logback.xml
+
+# 以下变量可在依赖方 application.yml / 启动参数 / 环境变量中覆盖，控制日志切分行为：
+#   LOG_PATH              日志输出目录，默认 ./logs
+#   LOG_FILE_MAX_SIZE     单个日志文件大小上限，超过则按 _N 分片，默认 200MB
+#   LOG_FILE_MAX_HISTORY  日志保留天数，默认 30
+#   LOG_TOTAL_SIZE_CAP    日志总大小上限，超过则清理最老文件，默认 10GB

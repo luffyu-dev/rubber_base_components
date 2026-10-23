@@ -3,7 +3,7 @@ package com.rubber.base.components.redis.client;
 import com.rubber.base.components.redis.RedisClientProxy;
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisShardInfo;
+import redis.clients.jedis.JedisClientConfig;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLParameters;
@@ -25,6 +25,10 @@ public class JedisClientProxy extends Jedis implements RedisClientProxy {
 
     public JedisClientProxy(HostAndPort hp) {
         super(hp);
+    }
+
+    public JedisClientProxy(HostAndPort hp, JedisClientConfig config) {
+        super(hp, config);
     }
 
     public JedisClientProxy(String host, int port) {
@@ -61,10 +65,6 @@ public class JedisClientProxy extends Jedis implements RedisClientProxy {
 
     public JedisClientProxy(String host, int port, int connectionTimeout, int soTimeout, boolean ssl, SSLSocketFactory sslSocketFactory, SSLParameters sslParameters, HostnameVerifier hostnameVerifier) {
         super(host, port, connectionTimeout, soTimeout, ssl, sslSocketFactory, sslParameters, hostnameVerifier);
-    }
-
-    public JedisClientProxy(JedisShardInfo shardInfo) {
-        super(shardInfo);
     }
 
     public JedisClientProxy(URI uri) {

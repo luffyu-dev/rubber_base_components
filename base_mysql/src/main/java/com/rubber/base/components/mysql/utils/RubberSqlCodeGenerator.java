@@ -1,11 +1,7 @@
 package com.rubber.base.components.mysql.utils;
 
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.generator.AutoGenerator;
-import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
-import com.baomidou.mybatisplus.generator.config.GlobalConfig;
-import com.baomidou.mybatisplus.generator.config.PackageConfig;
-import com.baomidou.mybatisplus.generator.config.StrategyConfig;
+import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import lombok.Data;
@@ -24,81 +20,51 @@ public class RubberSqlCodeGenerator {
         this.configBean = codeGeneratorConfigBean;
     }
 
-    public void create(String... tables){
-        AutoGenerator mpg = new AutoGenerator();
-        mpg.setTemplateEngine(new FreemarkerTemplateEngine());
-
-        //全局变量配置
-        GlobalConfig gc = new GlobalConfig();
-        gc.setOutputDir(configBean.getModelName() + "/src/main/java");
-        gc.setAuthor(configBean.getAuthor());
-        //是否打开输出文件
-        gc.setOpen(false);
-        //是否覆盖已经存在的文件
-        gc.setFileOverride(false);
-        mpg.setGlobalConfig(gc);
-
-        /**
-         * 数据库的设置
-         */
-        DataSourceConfig dataSourceConfig = new DataSourceConfig();
-        dataSourceConfig.setUrl(configBean.getJdbcUrl());
-        dataSourceConfig.setDriverName(configBean.getDriverName());
-        dataSourceConfig.setUsername(configBean.getUserName());
-        dataSourceConfig.setPassword(configBean.getPassword());
-        mpg.setDataSource(dataSourceConfig);
-
-
-        //包名 配置
-        PackageConfig pc = new PackageConfig();
-        pc.setParent(configBean.packageParent);
-        pc.setXml("mapper");
-
-        mpg.setPackageInfo(pc);
-
-
-        // 策略配置
-        StrategyConfig strategy = new StrategyConfig();
-        strategy.setNaming(NamingStrategy.underline_to_camel);
-        strategy.setColumnNaming(NamingStrategy.underline_to_camel);
-
-        if (StrUtil.isNotEmpty(configBean.getBaseEntityClass())){
-            strategy.setSuperEntityClass(configBean.getBaseEntityClass());
-        }
-        if (StrUtil.isNotEmpty(configBean.getBaseServiceImpl())){
-            strategy.setSuperServiceImplClass(configBean.getBaseServiceImpl());
-        }
-        //是否开启 lombok 开启之后 文件中没有get set方法
-        strategy.setEntityLombokModel(configBean.isLombok);
-        //对于controller 是否开启 @RestController注解
-        strategy.setRestControllerStyle(configBean.isRestController);
-
-        strategy.setInclude(tables);
-        //strategy.setSuperEntityColumns(keyId);
-        //乐观锁字段
-        strategy.setVersionFieldName("version");
-
-        strategy.setControllerMappingHyphenStyle(true);
-        strategy.setTablePrefix(configBean.getTablePrefix());
-
-        mpg.setStrategy(strategy);
-        mpg.setTemplateEngine(new FreemarkerTemplateEngine());
-        mpg.execute();
+    public void create(String... tables) {
+        // mybatis-plus 3.5.7 起 AutoGenerator 配置改为 Builder 模式，使用 FastAutoGenerator 链式构建
+        FastAutoGenerator.create(configBean.getJdbcUrl(), configBean.getUserName(), configBean.getPassword())
+                // 全局变量配置（setOpen(false) → disableOpenDir；fileOverride 默认关闭不覆盖）
+                .globalConfig(builder -> builder
+                        .outputDir(configBean.getModelName() + "/src/main/java")
+                        .author(configBean.getAuthor())
+                        .disableOpenDir())
+                // 包名配置
+                .packageConfig(builder -> builder
+                        .parent(configBean.packageParent)
+                        .xml("mapper"))
+                // 策略配置
+                .strategyConfig(builder -> {
+                    builder.addInclude(tables)
+                            .addTablePrefix(configBean.getTablePrefix());
+                    builder.entityBuilder()
+                            .naming(NamingStrategy.underline_to_camel)
+                            .columnNaming(NamingStrategy.underline_to_camel)
+                            .enableLombok()
+                            .versionPropertyName("version");
+                    if (StrUtil.isNotEmpty(configBean.getBaseEntityClass())) {
+                        builder.entityBuilder().superClass(configBean.getBaseEntityClass());
+                    }
+                    if (StrUtil.isNotEmpty(configBean.getBaseServiceImpl())) {
+                        builder.serviceBuilder().superServiceImplClass(configBean.getBaseServiceImpl());
+                    }
+                    if (configBean.isRestController) {
+                        builder.controllerBuilder().enableRestStyle().enableHyphenStyle();
+                    }
+                })
+                .templateEngine(new FreemarkerTemplateEngine())
+                .execute();
     }
 
 
-
-
-
     @Data
-    public static class CodeGeneratorConfigBean{
+    public static class CodeGeneratorConfigBean {
         /**
          * 数据库链接信息
          */
         private String jdbcUrl;
         private String userName;
         private String password;
-        private String driverName = "com.mysql.jdbc.Driver";
+        private String driverName = "com.mysql.cj.jdbc.Driver";
 
         /**
          * 模块名称
