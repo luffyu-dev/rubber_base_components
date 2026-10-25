@@ -29,16 +29,18 @@
         </dependency>
 
 
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid-spring-boot-4-starter</artifactId>
-        </dependency>
-
         <!-- Druid core only (the boot-3 starter is incompatible with Spring Boot 4.x) -->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
         </dependency>
+
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-4-starter</artifactId>
+        </dependency>
+
 
 
 

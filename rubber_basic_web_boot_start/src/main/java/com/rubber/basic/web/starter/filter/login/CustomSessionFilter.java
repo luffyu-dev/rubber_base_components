@@ -27,11 +27,15 @@ public class CustomSessionFilter implements Filter {
 
 
         CustomResponseWrapper customHttpServletResponseWrapper = null;
-        try {
-            HttpServletResponse res = (HttpServletResponse)response;
-            customHttpServletResponseWrapper = new CustomResponseWrapper(res);
-        }catch (Exception e){
+        // SSE（text/event-stream）响应必须每个事件实时写回并 flush 到客户端；
+        // ContentCachingResponseWrapper 会把整个响应体缓存在内存里，导致流式响应失效，因此跳过包装
+        if (!isSseRequest(request)) {
+            try {
+                HttpServletResponse res = (HttpServletResponse)response;
+                customHttpServletResponseWrapper = new CustomResponseWrapper(res);
+            }catch (Exception e){
 
+            }
         }
 
 
@@ -56,5 +60,13 @@ public class CustomSessionFilter implements Filter {
         if (body.length > 0) {
             responseWrapper.copyBodyToResponse();
         }
+    }
+
+    private boolean isSseRequest(ServletRequest request) {
+        if (!(request instanceof HttpServletRequest)) {
+            return false;
+        }
+        String accept = ((HttpServletRequest) request).getHeader("Accept");
+        return accept != null && accept.contains("text/event-stream");
     }
 }
